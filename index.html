@@ -70,10 +70,12 @@ canvas {
   overflow: hidden;
   transition: all 0.4s ease;
 }
+
 .menu-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset;
 }
+
 .menu-btn .icon {
   margin-right: 8px;
   width: 16px;
@@ -83,6 +85,7 @@ canvas {
   border-left: 3px solid black;
   animation: spin 1.5s linear infinite;
 }
+
 @keyframes spin {
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg);}
@@ -103,13 +106,11 @@ canvas {
   transform: translateX(0);
   opacity: 0;
   transition: right 0.5s ease, opacity 0.5s ease;
-  display: none;
 }
 
 .panel.active {
   right: 0;
   opacity: 1;
-  display: block;
 }
 
 /* GRID */
@@ -195,7 +196,7 @@ canvas {
   font-weight: bold;
 }
 
-/* PLAYLIST */
+/* PLAYLIST SPOTIFY */
 #playlist {
   position: fixed;
   top: 0;
@@ -207,6 +208,8 @@ canvas {
   padding: 10px;
   box-sizing: border-box;
   overflow-y: auto;
+  text-align: center;
+  border-radius: 12px;
 }
 
 .divider {
@@ -289,8 +292,11 @@ footer a {
 <div id="playlist">
   <h3 class="gradient-text">Playlist Spotify</h3>
   <hr class="divider">
-  <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3?utm_source=generator"
-          width="100%" height="400" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+  <iframe data-testid="embed-iframe" style="border-radius:12px" 
+          src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3?utm_source=generator" 
+          width="100%" height="352" frameBorder="0" allowfullscreen 
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+  </iframe>
 </div>
 
 <!-- AMIGOS -->
@@ -361,45 +367,33 @@ function playSound() {
 // FUNÇÕES DE MENU
 function pcBack() {
   document.getElementById("panelGFS").classList.remove("active");
-  document.getElementById("panelGFS").style.display = "none";
   document.getElementById("panelStatic").classList.remove("active");
-  document.getElementById("panelStatic").style.display = "none";
   document.getElementById("playlist").style.display = "block";
   document.getElementById("amigos").style.display = "block";
 }
 
 function openGFS() {
-  const panel = document.getElementById("panelGFS");
-  panel.style.display = "block";
-  panel.classList.add("active");
-  document.getElementById("panelStatic").style.display = "none";
+  document.getElementById("panelGFS").classList.add("active");
   document.getElementById("panelStatic").classList.remove("active");
+  document.getElementById("playlist").style.display = "none";
+  document.getElementById("amigos").style.display = "none";
+
   const card = document.getElementById("cardGFS1");
   card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
   card.onclick = function() { openModal("https://xatimg.com/image/2z709uX4q7li.gif"); };
-  document.getElementById("playlist").style.display = "none";
-  document.getElementById("amigos").style.display = "none";
 }
 
 function openStatic() {
-  const panel = document.getElementById("panelStatic");
-  panel.style.display = "block";
-  panel.classList.add("active");
-  document.getElementById("panelGFS").style.display = "none";
+  document.getElementById("panelStatic").classList.add("active");
   document.getElementById("panelGFS").classList.remove("active");
-  resetParticlesStatic();
   document.getElementById("playlist").style.display = "none";
   document.getElementById("amigos").style.display = "none";
+  resetParticlesStatic();
 }
 
 // MODAL
-function openModal(src) { 
-  document.getElementById("modal").style.display = "flex"; 
-  document.getElementById("modalImg").src = src; 
-}
-function closeModal() { 
-  document.getElementById("modal").style.display = "none"; 
-}
+function openModal(src) { document.getElementById("modal").style.display = "flex"; document.getElementById("modalImg").src = src; }
+function closeModal() { document.getElementById("modal").style.display = "none"; }
 
 // CANVAS PARTICULAS
 const canvas = document.getElementById("canvas");
@@ -409,47 +403,10 @@ window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
 let particles = [];
-class Particle { 
-  constructor(){ 
-    this.x=Math.random()*canvas.width; 
-    this.y=Math.random()*canvas.height; 
-    this.size=Math.random()*2+1; 
-    this.speedX=Math.random()-0.5; 
-    this.speedY=Math.random()-0.5;
-  } 
-  update(){
-    this.x+=this.speedX; 
-    this.y+=this.speedY; 
-    if(this.x>canvas.width)this.x=0;
-    if(this.x<0)this.x=canvas.width;
-    if(this.y>canvas.height)this.y=0;
-    if(this.y<0)this.y=canvas.height;
-  } 
-  draw(){
-    ctx.fillStyle="#00ffff";
-    ctx.beginPath();
-    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    ctx.fill();
-  }
-}
-function initParticles(count=100){
-  particles=[];
-  for(let i=0;i<count;i++)particles.push(new Particle());
-}
-function resetParticlesStatic(count=100){
-  particles=[];
-  for(let i=0;i<count;i++){
-    let p=new Particle();
-    p.speedX=0;
-    p.speedY=0;
-    particles.push(p);
-  }
-}
-function animateParticles(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach(p=>{p.update();p.draw();});
-  requestAnimationFrame(animateParticles);
-}
+class Particle { constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.size=Math.random()*2+1; this.speedX=Math.random()-0.5; this.speedY=Math.random()-0.5;} update(){this.x+=this.speedX; this.y+=this.speedY; if(this.x>canvas.width)this.x=0;if(this.x<0)this.x=canvas.width;if(this.y>canvas.height)this.y=0;if(this.y<0)this.y=canvas.height;} draw(){ctx.fillStyle="#00ffff";ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill();} }
+function initParticles(count=100){particles=[];for(let i=0;i<count;i++)particles.push(new Particle());}
+function resetParticlesStatic(count=100){particles=[];for(let i=0;i<count;i++){let p=new Particle();p.speedX=0;p.speedY=0;particles.push(p);} }
+function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateParticles);}
 animateParticles();
 </script>
 </body>
