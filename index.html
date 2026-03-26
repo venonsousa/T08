@@ -94,9 +94,9 @@ canvas {
 .panel {
   position: fixed;
   right: -100%;
-  top: 200px; /* espaço para playlist e amigos */
+  top: 220px; /* espaço para playlist e amigos */
   width: calc(100% - 260px);
-  height: calc(100% - 200px);
+  height: calc(100% - 220px);
   background: rgba(10,10,10,0.95);
   padding: 30px;
   box-sizing: border-box;
@@ -196,7 +196,7 @@ canvas {
   top: 0;
   left: 260px;
   width: calc(100% - 260px);
-  height: 160px;
+  height: 400px;
   background: rgba(0,0,0,0.7);
   z-index: 10;
   padding: 10px;
@@ -206,7 +206,7 @@ canvas {
 /* AMIGOS CENTRALIZADOS */
 #amigos {
   position: fixed;
-  top: 160px;
+  top: 400px;
   left: 260px;
   width: calc(100% - 260px);
   text-align: center;
@@ -224,8 +224,8 @@ canvas {
 }
 
 .friend-grid img {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   border: 2px solid #00ffff;
 }
@@ -236,6 +236,24 @@ canvas {
   color: #00ffff;
   font-weight: bold;
 }
+
+/* RODAPÉ */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 260px;
+  width: calc(100% - 260px);
+  text-align: center;
+  padding: 10px 0;
+  background: rgba(0,0,0,0.6);
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+footer a {
+  color: #00ffff;
+  text-decoration: none;
+}
 </style>
 </head>
 <body>
@@ -245,7 +263,11 @@ canvas {
 <!-- PLAYLIST YOUTUBE -->
 <div id="playlist">
   <h3 style="color:#00ffff;">Playlist Chris Brown</h3>
-  <iframe width="100%" height="120" src="https://www.youtube.com/embed?listType=playlist&list=PLxyz12345ABCDE" title="Chris Brown Playlist" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe width="370" height="400" 
+          src="https://www.youtube.com/embed?listType=playlist&list=PLxyz12345ABCDE" 
+          title="Chris Brown Playlist" 
+          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+  </iframe>
 </div>
 
 <!-- AMIGOS -->
@@ -253,19 +275,19 @@ canvas {
   <h3 style="color:#00ffff;">Meus Amigos</h3>
   <div class="friend-grid">
     <div>
-      <img src="https://i.pravatar.cc/100?img=10" alt="Amigo 1">
+      <img src="https://i.pravatar.cc/120?img=10" alt="Amigo 1">
       <span>Amigo 1</span>
     </div>
     <div>
-      <img src="https://i.pravatar.cc/100?img=11" alt="Amigo 2">
+      <img src="https://i.pravatar.cc/120?img=11" alt="Amigo 2">
       <span>Amigo 2</span>
     </div>
     <div>
-      <img src="https://i.pravatar.cc/100?img=12" alt="Amigo 3">
+      <img src="https://i.pravatar.cc/120?img=12" alt="Amigo 3">
       <span>Amigo 3</span>
     </div>
     <div>
-      <img src="https://i.pravatar.cc/100?img=13" alt="Amigo 4">
+      <img src="https://i.pravatar.cc/120?img=13" alt="Amigo 4">
       <span>Amigo 4</span>
     </div>
   </div>
@@ -311,7 +333,9 @@ canvas {
 
 <!-- RODAPÉ -->
 <footer>
-  <a href="https://xat.com/conexaosertanejoo" target="_blank">Copyright @ - 2026 // Reservado iCarvãozim / Fundos / Pcback / Perfil</a>
+  <a href="https://xat.com/conexaosertanejoo" target="_blank">
+    Copyright @ - 2026 // Reservado iCarvãozim / Fundos / Pcback / Perfil
+  </a>
 </footer>
 
 <script>
