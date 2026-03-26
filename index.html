@@ -37,10 +37,8 @@ canvas {
   box-sizing: border-box;
   z-index: 20;
 }
-
 .profile { text-align: center; }
 .profile img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #00ffff; }
-
 .gradient-text {
   background: linear-gradient(45deg, #00ffff, #0077ff);
   -webkit-background-clip: text;
@@ -121,7 +119,6 @@ canvas {
   border-radius: 10px;
 }
 .card:hover { transform: scale(1.05); z-index: 999; }
-/* Ajuste imagens dos cards */
 .card img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; }
 
 /* MODAL */
@@ -236,14 +233,14 @@ footer a { color: #00ffff; text-decoration: none; }
     <h2 class="gradient-text">iiCarvaozim</h2>
     <p class="gradient-text">Dev • Criador • Designer</p>
   </div>
-  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
+  <button class="menu-btn" onclick="showMainCard();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
   <button class="menu-btn" onclick="openGFS(); playSound();"><div class="icon"></div> FUNDOS GFS</button>
   <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
 </div>
 
 <!-- PAINÉIS -->
 <div class="panel" id="panelGFS">
-  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
+  <button class="menu-btn" onclick="showMainCard();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
   <div class="grid">
     <div class="card" id="cardGFS1"></div>
     <div class="card"></div>
@@ -253,7 +250,7 @@ footer a { color: #00ffff; text-decoration: none; }
 </div>
 
 <div class="panel" id="panelStatic">
-  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
+  <button class="menu-btn" onclick="showMainCard();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
   <div class="grid">
     <div class="card"></div>
     <div class="card"></div>
@@ -278,11 +275,15 @@ footer a { color: #00ffff; text-decoration: none; }
               width="300" height="380" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
-    <div id="about" class="menu-panel"><p>iiscarvaozim do xat.com</p></div>
+    <div id="about" class="menu-panel">
+      <p style="text-align:center; font-size:16px;">iiscarvaozim do xat.com</p>
+    </div>
+
     <div id="contact" class="menu-panel">
       <label for="trade-link">Trade:</label>
       <input type="text" id="trade-link" value="https://xa.com/trade" readonly onclick="this.select()">
     </div>
+
     <div id="friends-panel" class="menu-panel">
       <h3 class="gradient-text">Meus Amigos</h3>
       <div class="friend-grid">
@@ -316,10 +317,17 @@ function playSound() {
 }
 
 // MENU DE PAINÉIS
-function pcBack() {
-  document.getElementById("panelGFS").classList.remove("active");
-  document.getElementById("panelStatic").classList.remove("active");
-  document.getElementById("main-card").style.display = "flex";
+function showPanel(panelId) {
+  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+  // Oculta Spotify
+  document.getElementById('spotify-inner').style.display = 'none';
+}
+
+function showMainCard() {
+  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('main-card').style.display = 'flex';
+  document.getElementById('spotify-inner').style.display = 'flex';
 }
 
 function openGFS() {
@@ -344,13 +352,6 @@ function openModal(src) {
   document.getElementById("modalImg").src = src; 
 }
 function closeModal() { document.getElementById("modal").style.display = "none"; }
-
-// MENU INTERNO
-function showPanel(panelId) {
-  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById(panelId).classList.add('active');
-}
-showPanel('about'); // inicial
 
 // CANVAS PARTICULAS
 const canvas = document.getElementById("canvas");
