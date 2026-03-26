@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interface Premium</title>
+<title>Interface Premium - 3 Colunas</title>
 <style>
 body {
   margin: 0;
@@ -19,13 +19,16 @@ canvas {
   z-index: -1;
 }
 
-/* SIDEBAR */
+/* CONTAINER TRÊS COLUNAS */
+.container {
+  display: grid;
+  grid-template-columns: 260px 1fr 300px;
+  grid-template-rows: 100vh;
+  gap: 0;
+}
+
+/* SIDEBAR ESQUERDA */
 .sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 260px;
-  height: 100%;
   background: rgba(0,0,0,0.7);
   backdrop-filter: blur(10px);
   padding: 20px;
@@ -91,29 +94,57 @@ canvas {
   100% { transform: rotate(360deg);}
 }
 
-/* PAINÉIS */
-.panel {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: calc(100% - 260px);
-  height: 100%;
-  background: rgba(10,10,10,0.95);
-  padding: 30px;
+/* COLUNA DO MEIO */
+.middle {
+  background: rgba(10,10,10,0.7);
+  padding: 10px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* COLUNA DIREITA - AMIGOS */
+.right {
+  background: rgba(0,0,0,0.5);
+  padding: 15px;
   box-sizing: border-box;
   overflow-y: auto;
-  z-index: 5;
-  transform: translateX(0);
-  opacity: 0;
-  transition: right 0.5s ease, opacity 0.5s ease;
 }
 
-.panel.active {
-  right: 0;
-  opacity: 1;
+/* GRID AMIGOS */
+.friend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  align-items: center;
 }
 
-/* GRID */
+.friend-grid div {
+  z-index: 1;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.friend-grid div:hover {
+  transform: scale(1.05);
+  z-index: 999;
+  box-shadow: 0 0 20px #00ffff;
+}
+
+.friend-grid img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid #00ffff;
+}
+
+.friend-grid span {
+  display: block;
+  margin-top: 5px;
+  color: #00ffff;
+  font-weight: bold;
+}
+
+/* GRID CARDS */
 .grid {
   display: flex;
   flex-wrap: wrap;
@@ -196,84 +227,13 @@ canvas {
   font-weight: bold;
 }
 
-/* PLAYLIST */
-#playlist {
-  position: fixed;
-  top: 0;
-  left: 260px;
-  width: calc(100% - 260px);
-  height: 420px;
-  background: rgba(0,0,0,0.7);
-  z-index: 10;
-  padding: 10px;
-  box-sizing: border-box;
-  overflow-y: auto;
-}
-
-.divider {
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(to right, #00ffff, #0077ff);
-  margin: 15px 0;
-  border: none;
-}
-
-/* AMIGOS */
-#amigos {
-  position: fixed;
-  top: 420px;
-  left: 260px;
-  width: calc(100% - 260px);
-  text-align: center;
-  background: rgba(0,0,0,0.5);
-  z-index: 10;
-  padding: 15px 0;
-}
-
-.friend-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 20px;
-  justify-items: center;
-  align-items: center;
-}
-
-.friend-grid div {
-  z-index: 1;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.friend-grid div:hover {
-  transform: scale(1.05);
-  z-index: 999;
-  box-shadow: 0 0 20px #00ffff;
-}
-
-.friend-grid img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 2px solid #00ffff;
-}
-
-.friend-grid span {
-  display: block;
-  margin-top: 5px;
-  color: #00ffff;
-  font-weight: bold;
-}
-
 /* RODAPÉ */
 footer {
-  position: fixed;
-  bottom: 0;
-  left: 260px;
-  width: calc(100% - 260px);
+  grid-column: 1 / 4;
   text-align: center;
   padding: 10px 0;
   background: rgba(0,0,0,0.6);
   font-size: 14px;
-  box-sizing: border-box;
 }
 
 footer a {
@@ -286,45 +246,46 @@ footer a {
 
 <canvas id="canvas"></canvas>
 
-<!-- PLAYLIST -->
-<div id="playlist">
-  <h3 class="gradient-text">Playlist Chris Brown</h3>
-  <hr class="divider">
-  <iframe width="100%" height="200" 
-          src="https://www.youtube.com/embed?listType=playlist&list=PLxyz12345ABCDE" 
-          title="Chris Brown Playlist" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-  </iframe>
-
-  <h3 class="gradient-text" style="margin-top:15px;">Vídeo Extra</h3>
-  <iframe width="100%" height="200" 
-          src="https://www.youtube.com/embed/2PDATLHeeV8" 
-          title="Vídeo Adicional" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-  </iframe>
-</div>
-
-<!-- AMIGOS -->
-<div id="amigos">
-  <h3 class="gradient-text">Meus Amigos</h3>
-  <hr class="divider">
-  <div class="friend-grid">
-    <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
-    <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
-    <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
-    <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
-  </div>
-</div>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-  <div class="profile">
-    <img src="https://i.pravatar.cc/150">
-    <h2 class="gradient-text">iiCarvaozim</h2>
-    <p class="gradient-text">Dev • Criador • Designer</p>
+<div class="container">
+  <!-- COLUNA ESQUERDA -->
+  <div class="sidebar">
+    <div class="profile">
+      <img src="https://i.pravatar.cc/150">
+      <h2 class="gradient-text">iiCarvaozim</h2>
+      <p class="gradient-text">Dev • Criador • Designer</p>
+    </div>
+    <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
+    <button class="menu-btn" onclick="openGFS(); playSound();"><div class="icon"></div> FUNDOS GFS</button>
+    <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
   </div>
 
-  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
-  <button class="menu-btn" onclick="openGFS(); playSound();"><div class="icon"></div> FUNDOS GFS</button>
-  <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
+  <!-- COLUNA DO MEIO -->
+  <div class="middle">
+    <h3 class="gradient-text">Playlist Chris Brown</h3>
+    <hr class="divider">
+    <iframe width="100%" height="200" 
+      src="https://www.youtube.com/embed?listType=playlist&list=PLxyz12345ABCDE" 
+      title="Chris Brown Playlist" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+    </iframe>
+
+    <h3 class="gradient-text" style="margin-top:15px;">Vídeo Extra</h3>
+    <iframe width="100%" height="200" 
+      src="https://www.youtube.com/embed/2PDATLHeeV8" 
+      title="Vídeo Adicional" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- COLUNA DIREITA -->
+  <div class="right">
+    <h3 class="gradient-text">Meus Amigos</h3>
+    <hr class="divider">
+    <div class="friend-grid">
+      <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
+      <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
+      <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
+      <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
+    </div>
+  </div>
 </div>
 
 <!-- PAINÉIS -->
@@ -367,19 +328,15 @@ function playSound() {
   audio.play();
 }
 
-// FUNÇÕES DE MENU
+// MENU
 function pcBack() {
   document.getElementById("panelGFS").classList.remove("active");
   document.getElementById("panelStatic").classList.remove("active");
-  document.getElementById("playlist").style.display = "block";
-  document.getElementById("amigos").style.display = "block";
 }
 
 function openGFS() {
   document.getElementById("panelGFS").classList.add("active");
   document.getElementById("panelStatic").classList.remove("active");
-  document.getElementById("playlist").style.display = "none";
-  document.getElementById("amigos").style.display = "none";
 
   const card = document.getElementById("cardGFS1");
   card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
@@ -389,8 +346,6 @@ function openGFS() {
 function openStatic() {
   document.getElementById("panelStatic").classList.add("active");
   document.getElementById("panelGFS").classList.remove("active");
-  document.getElementById("playlist").style.display = "none";
-  document.getElementById("amigos").style.display = "none";
   resetParticlesStatic();
 }
 
@@ -398,7 +353,7 @@ function openStatic() {
 function openModal(src) { document.getElementById("modal").style.display = "flex"; document.getElementById("modalImg").src = src; }
 function closeModal() { document.getElementById("modal").style.display = "none"; }
 
-// CANVAS PARTICULAS
+// PARTICULAS
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
