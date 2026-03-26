@@ -196,11 +196,12 @@ canvas {
   font-weight: bold;
 }
 
-/* PLAYLIST SPOTIFY */
+/* PLAYLIST SPOTIFY CENTRALIZADA */
 #playlist {
   position: fixed;
-  top: 0;
-  left: 260px;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 385px;
   height: 464px;
   background: rgba(0,0,0,0.7);
@@ -212,11 +213,12 @@ canvas {
   border-radius: 12px;
 }
 
-/* AMIGOS */
+/* AMIGOS CENTRALIZADOS ABAIXO DA PLAYLIST */
 #amigos {
   position: fixed;
-  top: 474px;
-  left: 260px;
+  top: 524px; /* playlist top + altura + 10px gap */
+  left: 50%;
+  transform: translateX(-50%);
   width: 385px;
   text-align: center;
   background: rgba(0,0,0,0.5);
@@ -257,11 +259,12 @@ canvas {
   font-weight: bold;
 }
 
-/* RODAPÉ */
+/* RODAPÉ CENTRALIZADO */
 footer {
   position: fixed;
   bottom: 0;
-  left: 260px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 385px;
   text-align: center;
   padding: 10px 0;
