@@ -9,7 +9,11 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: url('https://xatimg.com/image/2z709uX4q7li.gif') no-repeat center center / cover;
+  background-image: url('https://xatimg.com/image/2z709uX4q7li.gif');
+  background-size: cover;       /* cobre toda a tela mantendo proporção */
+  background-position: center;  /* centraliza a imagem */
+  background-repeat: no-repeat; /* evita repetição */
+  background-attachment: fixed; /* fixa a imagem ao rolar a página */
   color: white;
   overflow-x: hidden;
 }
