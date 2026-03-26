@@ -309,6 +309,10 @@ footer a { color: #00ffff; text-decoration: none; }
 </footer>
 
 <script>
+// BLOQUEIO: botão direito e Ctrl+U
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => { if(e.ctrlKey && e.key.toLowerCase() === 'u'){ e.preventDefault(); } });
+
 // SOM
 function playSound() {
   const audio = new Audio("https://freesound.org/data/previews/341/341695_6245054-lq.mp3");
@@ -320,7 +324,6 @@ function playSound() {
 function showPanel(panelId) {
   document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
   document.getElementById(panelId).classList.add('active');
-  // Oculta Spotify
   document.getElementById('spotify-inner').style.display = 'none';
 }
 
