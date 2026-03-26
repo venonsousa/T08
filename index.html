@@ -9,7 +9,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #050505;
+  background: url('https://xatimg.com/image/2z709uX4q7li.gif') no-repeat center center / cover;
   color: white;
   overflow-x: hidden;
 }
@@ -34,15 +34,8 @@ canvas {
   z-index: 20;
 }
 
-.profile {
-  text-align: center;
-}
-.profile img {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  border: 2px solid #00ffff;
-}
+.profile { text-align: center; }
+.profile img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #00ffff; }
 
 .gradient-text {
   background: linear-gradient(45deg, #00ffff, #0077ff);
@@ -72,26 +65,9 @@ canvas {
   overflow: hidden;
   transition: all 0.4s ease;
 }
-
-.menu-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset;
-}
-
-.menu-btn .icon {
-  margin-right: 8px;
-  width: 16px;
-  height: 16px;
-  border: 2px solid black;
-  border-radius: 50%;
-  border-left: 3px solid black;
-  animation: spin 1.5s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg);}
-  100% { transform: rotate(360deg);}
-}
+.menu-btn:hover { transform: scale(1.05); box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset; }
+.menu-btn .icon { margin-right: 8px; width: 16px; height: 16px; border: 2px solid black; border-radius: 50%; border-left: 3px solid black; animation: spin 1.5s linear infinite; }
+@keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 
 /* PAINÉIS */
 .panel {
@@ -109,20 +85,10 @@ canvas {
   opacity: 0;
   transition: right 0.5s ease, opacity 0.5s ease;
 }
-
-.panel.active {
-  right: 0;
-  opacity: 1;
-}
+.panel.active { right: 0; opacity: 1; }
 
 /* GRID */
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  counter-reset: card;
-}
-
+.grid { display: flex; flex-wrap: wrap; gap: 15px; counter-reset: card; }
 .card {
   position: relative;
   width: 260px;
@@ -138,7 +104,6 @@ canvas {
   cursor: pointer;
   z-index: 1;
 }
-
 .card::before {
   counter-increment: card;
   content: "#" counter(card);
@@ -152,11 +117,9 @@ canvas {
   padding: 5px 10px;
   border-radius: 10px;
 }
-
-.card:hover {
-  transform: scale(1.05);
-  z-index: 999;
-}
+.card:hover { transform: scale(1.05); z-index: 999; }
+/* Ajuste imagens dos cards */
+.card img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; }
 
 /* MODAL */
 #modal {
@@ -171,24 +134,8 @@ canvas {
   justify-content: center;
   align-items: center;
 }
-
-#modal img {
-  width: 80%;
-  max-width: 1088px;
-  height: auto;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-#modal .close-btn {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  font-size: 28px;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-}
+#modal img { width: 80%; max-width: 1088px; height: auto; border-radius: 10px; object-fit: cover; }
+#modal .close-btn { position: absolute; top: 20px; right: 30px; font-size: 28px; color: white; cursor: pointer; font-weight: bold; }
 
 /* QUADRADO CENTRAL */
 #main-card {
@@ -209,13 +156,7 @@ canvas {
 }
 
 /* MENU INTERNO */
-#inner-menu {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  margin-bottom: 10px;
-}
-
+#inner-menu { display: flex; gap: 15px; justify-content: center; margin-bottom: 10px; }
 .menu-option {
   background: linear-gradient(45deg, #00ffff, #0077ff);
   border: none;
@@ -226,20 +167,10 @@ canvas {
   font-weight: bold;
   transition: all 0.3s ease;
 }
-
-.menu-option:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset;
-}
+.menu-option:hover { transform: scale(1.05); box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset; }
 
 /* CONTEÚDO DO CARD */
-#card-content {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: 20px;
-  flex: 1;
-}
+#card-content { display: flex; justify-content: space-around; align-items: center; gap: 20px; flex: 1; }
 
 /* PAINÉIS INTERNOS */
 .menu-panel {
@@ -252,10 +183,7 @@ canvas {
   overflow-y: auto;
   color: #00ffff;
 }
-
-.menu-panel.active {
-  display: block;
-}
+.menu-panel.active { display: block; }
 
 /* FRIEND GRID */
 .friend-grid {
@@ -265,7 +193,21 @@ canvas {
   justify-items: center;
   align-items: center;
 }
-.friend-grid img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #00ffff; }
+.friend-grid div {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s;
+}
+.friend-grid img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  border: 2px solid #00ffff;
+}
 .friend-grid span { margin-top: 5px; font-weight: bold; color: #00ffff; }
 
 /* RODAPÉ */
@@ -280,7 +222,6 @@ footer {
   font-size: 14px;
   box-sizing: border-box;
 }
-
 footer a { color: #00ffff; text-decoration: none; }
 </style>
 </head>
@@ -340,15 +281,11 @@ footer a { color: #00ffff; text-decoration: none; }
     </div>
 
     <!-- PAINÉIS INTERNOS -->
-    <div id="about" class="menu-panel">
-      <p>iiscarvaozim do xat.com</p>
-    </div>
-
+    <div id="about" class="menu-panel"><p>iiscarvaozim do xat.com</p></div>
     <div id="contact" class="menu-panel">
       <label for="trade-link">Trade:</label>
       <input type="text" id="trade-link" value="https://xa.com/trade" readonly onclick="this.select()">
     </div>
-
     <div id="friends-panel" class="menu-panel">
       <h3 class="gradient-text">Meus Amigos</h3>
       <div class="friend-grid">
@@ -416,9 +353,7 @@ function showPanel(panelId) {
   document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
   document.getElementById(panelId).classList.add('active');
 }
-
-// Inicialmente mostra "Sobre mim"
-showPanel('about');
+showPanel('about'); // inicial
 
 // CANVAS PARTICULAS
 const canvas = document.getElementById("canvas");
