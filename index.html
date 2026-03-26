@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interface Premium - 3 Colunas</title>
+<title>Interface Premium</title>
 <style>
 body {
   margin: 0;
@@ -19,16 +19,13 @@ canvas {
   z-index: -1;
 }
 
-/* CONTAINER TRÊS COLUNAS */
-.container {
-  display: grid;
-  grid-template-columns: 260px 1fr 300px;
-  grid-template-rows: 100vh;
-  gap: 0;
-}
-
-/* SIDEBAR ESQUERDA */
+/* SIDEBAR */
 .sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 260px;
+  height: 100%;
   background: rgba(0,0,0,0.7);
   backdrop-filter: blur(10px);
   padding: 20px;
@@ -73,12 +70,10 @@ canvas {
   overflow: hidden;
   transition: all 0.4s ease;
 }
-
 .menu-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset;
 }
-
 .menu-btn .icon {
   margin-right: 8px;
   width: 16px;
@@ -88,63 +83,36 @@ canvas {
   border-left: 3px solid black;
   animation: spin 1.5s linear infinite;
 }
-
 @keyframes spin {
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg);}
 }
 
-/* COLUNA DO MEIO */
-.middle {
-  background: rgba(10,10,10,0.7);
-  padding: 10px;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-/* COLUNA DIREITA - AMIGOS */
-.right {
-  background: rgba(0,0,0,0.5);
-  padding: 15px;
+/* PAINÉIS */
+.panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: calc(100% - 260px);
+  height: 100%;
+  background: rgba(10,10,10,0.95);
+  padding: 30px;
   box-sizing: border-box;
   overflow-y: auto;
+  z-index: 5;
+  transform: translateX(0);
+  opacity: 0;
+  transition: right 0.5s ease, opacity 0.5s ease;
+  display: none; /* Inicialmente oculto */
 }
 
-/* GRID AMIGOS */
-.friend-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 20px;
-  justify-items: center;
-  align-items: center;
-}
-
-.friend-grid div {
-  z-index: 1;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.friend-grid div:hover {
-  transform: scale(1.05);
-  z-index: 999;
-  box-shadow: 0 0 20px #00ffff;
-}
-
-.friend-grid img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 2px solid #00ffff;
-}
-
-.friend-grid span {
+.panel.active {
+  right: 0;
+  opacity: 1;
   display: block;
-  margin-top: 5px;
-  color: #00ffff;
-  font-weight: bold;
 }
 
-/* GRID CARDS */
+/* GRID */
 .grid {
   display: flex;
   flex-wrap: wrap;
@@ -227,13 +195,84 @@ canvas {
   font-weight: bold;
 }
 
+/* PLAYLIST */
+#playlist {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  width: calc(100% - 260px);
+  height: 420px;
+  background: rgba(0,0,0,0.7);
+  z-index: 10;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.divider {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, #00ffff, #0077ff);
+  margin: 15px 0;
+  border: none;
+}
+
+/* AMIGOS */
+#amigos {
+  position: fixed;
+  top: 420px;
+  left: 260px;
+  width: calc(100% - 260px);
+  text-align: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 10;
+  padding: 15px 0;
+}
+
+.friend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  align-items: center;
+}
+
+.friend-grid div {
+  z-index: 1;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.friend-grid div:hover {
+  transform: scale(1.05);
+  z-index: 999;
+  box-shadow: 0 0 20px #00ffff;
+}
+
+.friend-grid img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid #00ffff;
+}
+
+.friend-grid span {
+  display: block;
+  margin-top: 5px;
+  color: #00ffff;
+  font-weight: bold;
+}
+
 /* RODAPÉ */
 footer {
-  grid-column: 1 / 4;
+  position: fixed;
+  bottom: 0;
+  left: 260px;
+  width: calc(100% - 260px);
   text-align: center;
   padding: 10px 0;
   background: rgba(0,0,0,0.6);
   font-size: 14px;
+  box-sizing: border-box;
 }
 
 footer a {
@@ -246,46 +285,45 @@ footer a {
 
 <canvas id="canvas"></canvas>
 
-<div class="container">
-  <!-- COLUNA ESQUERDA -->
-  <div class="sidebar">
-    <div class="profile">
-      <img src="https://i.pravatar.cc/150">
-      <h2 class="gradient-text">iiCarvaozim</h2>
-      <p class="gradient-text">Dev • Criador • Designer</p>
-    </div>
-    <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
-    <button class="menu-btn" onclick="openGFS(); playSound();"><div class="icon"></div> FUNDOS GFS</button>
-    <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
+<!-- PLAYLIST -->
+<div id="playlist">
+  <h3 class="gradient-text">Playlist Chris Brown</h3>
+  <hr class="divider">
+  <iframe width="100%" height="200" 
+          src="https://www.youtube.com/embed?listType=playlist&list=PLxyz12345ABCDE" 
+          title="Chris Brown Playlist" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+  </iframe>
+
+  <h3 class="gradient-text" style="margin-top:15px;">Vídeo Extra</h3>
+  <iframe width="100%" height="200" 
+          src="https://www.youtube.com/embed/2PDATLHeeV8" 
+          title="Vídeo Adicional" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+  </iframe>
+</div>
+
+<!-- AMIGOS -->
+<div id="amigos">
+  <h3 class="gradient-text">Meus Amigos</h3>
+  <hr class="divider">
+  <div class="friend-grid">
+    <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
+    <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
+    <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
+    <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="profile">
+    <img src="https://i.pravatar.cc/150">
+    <h2 class="gradient-text">iiCarvaozim</h2>
+    <p class="gradient-text">Dev • Criador • Designer</p>
   </div>
 
-  <!-- COLUNA DO MEIO -->
-  <div class="middle">
-    <h3 class="gradient-text">Playlist Chris Brown</h3>
-    <hr class="divider">
-    <iframe width="100%" height="200" 
-      src="https://www.youtube.com/embed?listType=playlist&list=PLxyz12345ABCDE" 
-      title="Chris Brown Playlist" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-    </iframe>
-
-    <h3 class="gradient-text" style="margin-top:15px;">Vídeo Extra</h3>
-    <iframe width="100%" height="200" 
-      src="https://www.youtube.com/embed/2PDATLHeeV8" 
-      title="Vídeo Adicional" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-    </iframe>
-  </div>
-
-  <!-- COLUNA DIREITA -->
-  <div class="right">
-    <h3 class="gradient-text">Meus Amigos</h3>
-    <hr class="divider">
-    <div class="friend-grid">
-      <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
-      <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
-      <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
-      <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
-    </div>
-  </div>
+  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
+  <button class="menu-btn" onclick="openGFS(); playSound();"><div class="icon"></div> FUNDOS GFS</button>
+  <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
 </div>
 
 <!-- PAINÉIS -->
@@ -328,32 +366,57 @@ function playSound() {
   audio.play();
 }
 
-// MENU
+// FUNÇÕES DE MENU
 function pcBack() {
   document.getElementById("panelGFS").classList.remove("active");
+  document.getElementById("panelGFS").style.display = "none";
   document.getElementById("panelStatic").classList.remove("active");
+  document.getElementById("panelStatic").style.display = "none";
+
+  document.getElementById("playlist").style.display = "block";
+  document.getElementById("amigos").style.display = "block";
 }
 
 function openGFS() {
-  document.getElementById("panelGFS").classList.add("active");
+  const panel = document.getElementById("panelGFS");
+  panel.style.display = "block";
+  panel.classList.add("active");
+
+  document.getElementById("panelStatic").style.display = "none";
   document.getElementById("panelStatic").classList.remove("active");
 
   const card = document.getElementById("cardGFS1");
   card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
   card.onclick = function() { openModal("https://xatimg.com/image/2z709uX4q7li.gif"); };
+
+  document.getElementById("playlist").style.display = "none";
+  document.getElementById("amigos").style.display = "none";
 }
 
 function openStatic() {
-  document.getElementById("panelStatic").classList.add("active");
+  const panel = document.getElementById("panelStatic");
+  panel.style.display = "block";
+  panel.classList.add("active");
+
+  document.getElementById("panelGFS").style.display = "none";
   document.getElementById("panelGFS").classList.remove("active");
+
   resetParticlesStatic();
+
+  document.getElementById("playlist").style.display = "none";
+  document.getElementById("amigos").style.display = "none";
 }
 
 // MODAL
-function openModal(src) { document.getElementById("modal").style.display = "flex"; document.getElementById("modalImg").src = src; }
-function closeModal() { document.getElementById("modal").style.display = "none"; }
+function openModal(src) { 
+  document.getElementById("modal").style.display = "flex"; 
+  document.getElementById("modalImg").src = src; 
+}
+function closeModal() { 
+  document.getElementById("modal").style.display = "none"; 
+}
 
-// PARTICULAS
+// CANVAS PARTICULAS
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -361,10 +424,47 @@ window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
 let particles = [];
-class Particle { constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.size=Math.random()*2+1; this.speedX=Math.random()-0.5; this.speedY=Math.random()-0.5;} update(){this.x+=this.speedX; this.y+=this.speedY; if(this.x>canvas.width)this.x=0;if(this.x<0)this.x=canvas.width;if(this.y>canvas.height)this.y=0;if(this.y<0)this.y=canvas.height;} draw(){ctx.fillStyle="#00ffff";ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill();}}
-function initParticles(count=100){particles=[];for(let i=0;i<count;i++)particles.push(new Particle());}
-function resetParticlesStatic(count=100){particles=[];for(let i=0;i<count;i++){let p=new Particle();p.speedX=0;p.speedY=0;particles.push(p);}}
-function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateParticles);}
+class Particle { 
+  constructor(){ 
+    this.x=Math.random()*canvas.width; 
+    this.y=Math.random()*canvas.height; 
+    this.size=Math.random()*2+1; 
+    this.speedX=Math.random()-0.5; 
+    this.speedY=Math.random()-0.5;
+  } 
+  update(){
+    this.x+=this.speedX; 
+    this.y+=this.speedY; 
+    if(this.x>canvas.width)this.x=0;
+    if(this.x<0)this.x=canvas.width;
+    if(this.y>canvas.height)this.y=0;
+    if(this.y<0)this.y=canvas.height;
+  } 
+  draw(){
+    ctx.fillStyle="#00ffff";
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fill();
+  }
+}
+function initParticles(count=100){
+  particles=[];
+  for(let i=0;i<count;i++)particles.push(new Particle());
+}
+function resetParticlesStatic(count=100){
+  particles=[];
+  for(let i=0;i<count;i++){
+    let p=new Particle();
+    p.speedX=0;
+    p.speedY=0;
+    particles.push(p);
+  }
+}
+function animateParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{p.update();p.draw();});
+  requestAnimationFrame(animateParticles);
+}
 animateParticles();
 </script>
 </body>
