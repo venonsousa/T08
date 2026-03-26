@@ -203,11 +203,12 @@ canvas {
   top: 0;
   left: 260px;
   width: calc(100% - 260px);
-  height: 400px;
+  height: 420px;
   background: rgba(0,0,0,0.7);
   z-index: 10;
   padding: 10px;
   box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .divider {
@@ -221,7 +222,7 @@ canvas {
 /* ===== AMIGOS ===== */
 #amigos {
   position: fixed;
-  top: 400px;
+  top: 420px;
   left: 260px;
   width: calc(100% - 260px);
   text-align: center;
@@ -290,9 +291,15 @@ footer a {
 <div id="playlist">
   <h3 class="gradient-text">Playlist Chris Brown</h3>
   <hr class="divider">
-  <iframe width="370" height="400" 
-          src="https://www.youtube.com/embed?listType=playlist&list=2PDATLHeeV8" 
+  <iframe width="370" height="200" 
+          src="https://www.youtube.com/embed?listType=playlist&list=PLxyz12345ABCDE" 
           title="Chris Brown Playlist" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+  </iframe>
+
+  <h3 class="gradient-text" style="margin-top:15px;">Vídeo Extra</h3>
+  <iframe width="370" height="200" 
+          src="https://www.youtube.com/embed/2PDATLHeeV8" 
+          title="Vídeo Adicional" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
   </iframe>
 </div>
 
