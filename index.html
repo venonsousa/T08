@@ -85,7 +85,6 @@ canvas {
   box-sizing: border-box;
   overflow-y: auto;
   z-index: 15;
-  transform: translateX(0);
   opacity: 0;
   transition: right 0.5s ease, opacity 0.5s ease;
 }
@@ -177,16 +176,7 @@ canvas {
 #card-content { display: flex; justify-content: space-around; align-items: center; gap: 20px; flex: 1; }
 
 /* PAINÉIS INTERNOS */
-.menu-panel {
-  display: none;
-  background: rgba(0,255,255,0.05);
-  padding: 15px;
-  border-radius: 15px;
-  flex: 1;
-  max-height: 450px;
-  overflow-y: auto;
-  color: #00ffff;
-}
+.menu-panel { display: none; background: rgba(0,255,255,0.05); padding: 15px; border-radius: 15px; flex: 1; max-height: 450px; overflow-y: auto; color: #00ffff; }
 .menu-panel.active { display: block; }
 
 /* FRIEND GRID */
@@ -240,7 +230,6 @@ footer a { color: #00ffff; text-decoration: none; }
     <h2 class="gradient-text">iiCarvaozim</h2>
     <p class="gradient-text">Dev • Criador • Designer</p>
   </div>
-
   <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
   <button class="menu-btn" onclick="openGFS(); playSound();"><div class="icon"></div> FUNDOS GFS</button>
   <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
