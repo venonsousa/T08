@@ -95,31 +95,33 @@ canvas {
 /* ===== PAINÉIS SUAVES ===== */
 .panel {
   position: fixed;
-  top: 420px;
+  top: 0; 
+  right: -100%;
   width: calc(100% - 260px);
-  height: calc(100% - 420px);
+  height: 100%; 
   background: rgba(10,10,10,0.95);
   padding: 30px;
   box-sizing: border-box;
   overflow-y: auto;
-  z-index: 1;
+  z-index: 5;
   
-  transform: translateX(100%);
+  transform: translateX(0);
   opacity: 0;
-  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition: right 0.5s ease, opacity 0.5s ease;
 }
 
 .panel.active {
-  transform: translateX(0);
+  right: 0;
   opacity: 1;
 }
 
-/* ===== GRID ===== */
+/* ===== GRID FUNDOS ===== */
 .grid {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
   counter-reset: card;
+  justify-content: flex-start;
 }
 
 .card {
@@ -308,29 +310,17 @@ footer a {
   <h3 class="gradient-text">Meus Amigos</h3>
   <hr class="divider">
   <div class="friend-grid">
-    <div>
-      <img src="https://i.pravatar.cc/120?img=10" alt="Amigo 1">
-      <span>Amigo 1</span>
-    </div>
-    <div>
-      <img src="https://i.pravatar.cc/120?img=11" alt="Amigo 2">
-      <span>Amigo 2</span>
-    </div>
-    <div>
-      <img src="https://i.pravatar.cc/120?img=12" alt="Amigo 3">
-      <span>Amigo 3</span>
-    </div>
-    <div>
-      <img src="https://i.pravatar.cc/120?img=13" alt="Amigo 4">
-      <span>Amigo 4</span>
-    </div>
+    <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
+    <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
+    <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
+    <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
   </div>
 </div>
 
 <!-- SIDEBAR -->
 <div class="sidebar">
   <div class="profile">
-    <img src="https://i.pravatar.cc/150" alt="Foto de Perfil">
+    <img src="https://i.pravatar.cc/150">
     <h2 class="gradient-text">iiCarvaozim</h2>
     <p class="gradient-text">Dev • Criador • Designer</p>
   </div>
@@ -362,7 +352,7 @@ footer a {
 <!-- MODAL -->
 <div id="modal">
   <span class="close-btn" onclick="closeModal()">×</span>
-  <img id="modalImg" src="" alt="Modal Image">
+  <img id="modalImg">
 </div>
 
 <!-- RODAPÉ -->
@@ -380,7 +370,7 @@ function playSound() {
   audio.play();
 }
 
-// ===== FUNÇÕES MENU =====
+// ===== MENU =====
 function pcBack() {
   document.getElementById("panelGFS").classList.remove("active");
   document.getElementById("panelStatic").classList.remove("active");
@@ -395,7 +385,7 @@ function openGFS() {
   document.getElementById("amigos").style.display = "none";
 
   const card = document.getElementById("cardGFS1");
-  card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif" alt="GIF Fundos">';
+  card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
   card.onclick = function() { openModal("https://xatimg.com/image/2z709uX4q7li.gif"); };
 }
 
@@ -444,7 +434,7 @@ class Particle {
   draw() {
     ctx.fillStyle = "#00ffff";
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
     ctx.fill();
   }
 }
