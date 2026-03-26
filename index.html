@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interface Premium</title>
 <style>
+/* RESET & BODY */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -189,30 +190,76 @@ canvas {
   font-weight: bold;
 }
 
-/* SIDE GRID - Spotify e Amigos lado a lado */
-#side-grid {
+/* QUADRADO CENTRAL */
+#main-card {
   position: fixed;
   top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-  padding: 10px;
-  z-index: 10;
-}
-
-/* TABELAS MODERNAS */
-.table-container {
-  background: rgba(0,0,0,0.7);
-  padding: 10px;
-  border-radius: 15px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 650px;
+  height: 500px;
+  background: rgba(0,0,0,0.8);
+  border-radius: 20px;
+  padding: 20px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 15px;
+  z-index: 25;
 }
 
-/* AMIGOS */
+/* MENU INTERNO */
+#inner-menu {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.menu-option {
+  background: linear-gradient(45deg, #00ffff, #0077ff);
+  border: none;
+  color: black;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.menu-option:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset;
+}
+
+/* CONTEÚDO DO CARD */
+#card-content {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+}
+
+/* ESPAÇO PARA PANEL */
+.menu-panel {
+  display: none;
+  background: rgba(0,255,255,0.05);
+  padding: 15px;
+  border-radius: 15px;
+  flex: 1;
+  overflow-y: auto;
+  color: #00ffff;
+}
+
+.menu-panel.active {
+  display: block;
+}
+
+/* AJUSTE TABLE CONTAINERS DENTRO DO CARD */
+#spotify-inner, #friends-inner {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* FRIEND GRID */
 .friend-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
@@ -280,46 +327,60 @@ footer a {
   <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
 </div>
 
-<!-- SIDE GRID: Spotify e Amigos lado a lado -->
-<div id="side-grid">
-  <!-- SPOTIFY -->
-  <div class="table-container" id="spotify-container">
-    <h3 class="gradient-text">Spotify</h3>
-    <iframe style="border-radius:12px; border:none;" 
-            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3?utm_source=generator" 
-            width="385" height="464" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-  </div>
-
-  <!-- AMIGOS -->
-  <div class="table-container" id="amigos-container">
-    <h3 class="gradient-text">Meus Amigos</h3>
-    <div class="friend-grid">
-      <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
-      <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
-      <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
-      <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
-    </div>
-  </div>
-</div>
-
 <!-- PAINÉIS -->
 <div class="panel" id="panelGFS">
   <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
   <div class="grid">
-    <div class="card" id="cardGFS1"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
+    <div class="card" id="cardGFS1"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
   </div>
 </div>
 
 <div class="panel" id="panelStatic">
   <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
   <div class="grid">
-    <div class="card"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
-    <div class="card"><span>Item</span></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+    <div class="card"></div>
+  </div>
+</div>
+
+<!-- QUADRADO CENTRAL -->
+<div id="main-card">
+  <div id="inner-menu">
+    <button class="menu-option" onclick="showAbout()">Sobre mim</button>
+    <button class="menu-option" onclick="showContact()">Onde me encontrar</button>
+  </div>
+
+  <div id="card-content">
+    <div class="table-container" id="spotify-inner">
+      <h3 class="gradient-text">Spotify</h3>
+      <iframe style="border-radius:12px; border:none;" 
+              src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3" 
+              width="300" height="380" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <div class="table-container" id="friends-inner">
+      <h3 class="gradient-text">Meus Amigos</h3>
+      <div class="friend-grid">
+        <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
+        <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
+        <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
+        <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
+      </div>
+    </div>
+
+    <div id="about" class="menu-panel">
+      <p>iiscarvaozim do xat.com</p>
+    </div>
+
+    <div id="contact" class="menu-panel">
+      <label for="trade-link">Trade:</label>
+      <input type="text" id="trade-link" value="https://xa.com/trade" readonly onclick="this.select()">
+    </div>
   </div>
 </div>
 
@@ -329,7 +390,6 @@ footer a {
   <img id="modalImg">
 </div>
 
-<!-- RODAPÉ -->
 <footer>
   <a href="https://xat.com/conexaosertanejoo" target="_blank">
     Copyright @ - 2026 // Reservado iCarvãozim / Fundos / Pcback / Perfil
@@ -348,13 +408,13 @@ function playSound() {
 function pcBack() {
   document.getElementById("panelGFS").classList.remove("active");
   document.getElementById("panelStatic").classList.remove("active");
-  document.getElementById("side-grid").style.display = "flex";
+  document.getElementById("main-card").style.display = "flex";
 }
 
 function openGFS() {
   document.getElementById("panelGFS").classList.add("active");
   document.getElementById("panelStatic").classList.remove("active");
-  document.getElementById("side-grid").style.display = "none";
+  document.getElementById("main-card").style.display = "none";
 
   const card = document.getElementById("cardGFS1");
   card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
@@ -364,7 +424,7 @@ function openGFS() {
 function openStatic() {
   document.getElementById("panelStatic").classList.add("active");
   document.getElementById("panelGFS").classList.remove("active");
-  document.getElementById("side-grid").style.display = "none";
+  document.getElementById("main-card").style.display = "none";
   resetParticlesStatic();
 }
 
@@ -374,6 +434,16 @@ function openModal(src) {
   document.getElementById("modalImg").src = src; 
 }
 function closeModal() { document.getElementById("modal").style.display = "none"; }
+
+// MENU INTERNO
+function showAbout() {
+  document.getElementById("about").classList.add("active");
+  document.getElementById("contact").classList.remove("active");
+}
+function showContact() {
+  document.getElementById("contact").classList.add("active");
+  document.getElementById("about").classList.remove("active");
+}
 
 // CANVAS PARTICULAS
 const canvas = document.getElementById("canvas");
@@ -409,7 +479,12 @@ class Particle {
 function initParticles(count=100){particles=[];for(let i=0;i<count;i++)particles.push(new Particle());}
 function resetParticlesStatic(count=100){particles=[];for(let i=0;i<count;i++){let p=new Particle();p.speedX=0;p.speedY=0;particles.push(p);}}
 function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateParticles);}
+initParticles();
 animateParticles();
+
+// Inicialmente mostrar "Sobre mim"
+showAbout();
 </script>
+
 </body>
 </html>
