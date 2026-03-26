@@ -12,7 +12,6 @@ body {
   color: white;
   overflow-x: hidden;
 }
-
 canvas {
   position: fixed;
   top: 0;
@@ -36,7 +35,6 @@ canvas {
 .profile {
   text-align: center;
 }
-
 .profile img {
   width: 90px;
   height: 90px;
@@ -53,7 +51,7 @@ canvas {
 
 /* BOTÕES */
 .menu-btn {
-  margin-top: 20px;
+  margin-top: 15px;
   padding: 12px;
   background: linear-gradient(45deg, #00ffff, #0077ff);
   color: black;
@@ -128,7 +126,6 @@ canvas {
   display: flex;
   justify-content: center;
   align-items: center;
-  box-sizing: border-box;
   overflow: hidden;
   cursor: pointer;
   z-index: 1;
@@ -192,7 +189,7 @@ canvas {
   font-weight: bold;
 }
 
-/* PLAYLIST YOUTUBE */
+/* PLAYLIST */
 #playlist {
   position: fixed;
   top: 0;
@@ -323,8 +320,10 @@ footer a {
     <p class="gradient-text">Dev • Criador • Designer</p>
   </div>
 
+  <!-- Botão Voltar ao início -->
+  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
+
   <button class="menu-btn" onclick="openGFS(); playSound();"><div class="icon"></div> FUNDOS GFS</button>
-  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> PCBACK</button>
   <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
 </div>
 
@@ -368,20 +367,17 @@ function playSound() {
   audio.play();
 }
 
-// PCBACK
+// FUNÇÕES DE MENU
 function pcBack() {
   document.getElementById("panelGFS").classList.remove("active");
   document.getElementById("panelStatic").classList.remove("active");
-  // mostrar página inicial
   document.getElementById("playlist").style.display = "block";
   document.getElementById("amigos").style.display = "block";
 }
 
-// FUNDOS GFS
 function openGFS() {
   document.getElementById("panelGFS").classList.add("active");
   document.getElementById("panelStatic").classList.remove("active");
-  // esconder página inicial
   document.getElementById("playlist").style.display = "none";
   document.getElementById("amigos").style.display = "none";
 
@@ -390,7 +386,6 @@ function openGFS() {
   card.onclick = function() { openModal("https://xatimg.com/image/2z709uX4q7li.gif"); };
 }
 
-// FUNDOS ESTÁTICOS
 function openStatic() {
   document.getElementById("panelStatic").classList.add("active");
   document.getElementById("panelGFS").classList.remove("active");
@@ -403,7 +398,7 @@ function openStatic() {
 function openModal(src) { document.getElementById("modal").style.display = "flex"; document.getElementById("modalImg").src = src; }
 function closeModal() { document.getElementById("modal").style.display = "none"; }
 
-// CANVAS
+// CANVAS PARTICULAS
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -417,6 +412,5 @@ function resetParticlesStatic(count=100){particles=[];for(let i=0;i<count;i++){l
 function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateParticles);}
 animateParticles();
 </script>
-
 </body>
 </html>
