@@ -189,21 +189,20 @@ canvas {
   font-weight: bold;
 }
 
-/* MAIN GRID - LADO DIREITO */
+/* SIDE GRID - Spotify e Amigos lado a lado */
 #side-grid {
   position: fixed;
   top: 50%;
   right: 0;
   transform: translateY(-50%);
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  gap: 15px;
   padding: 10px;
   z-index: 10;
-  align-items: center;
 }
 
-/* TABLES MODERNAS */
+/* TABELAS MODERNAS */
 .table-container {
   background: rgba(0,0,0,0.7);
   padding: 10px;
@@ -216,8 +215,8 @@ canvas {
 /* AMIGOS */
 .friend-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 10px;
   justify-items: center;
   align-items: center;
   z-index: 10;
@@ -232,8 +231,8 @@ canvas {
 }
 
 .friend-grid img {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   border: 2px solid #00ffff;
 }
@@ -281,12 +280,14 @@ footer a {
   <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
 </div>
 
-<!-- SIDE GRID: Spotify + Amigos -->
+<!-- SIDE GRID: Spotify e Amigos lado a lado -->
 <div id="side-grid">
   <!-- SPOTIFY -->
   <div class="table-container" id="spotify-container">
     <h3 class="gradient-text">Spotify</h3>
-    <iframe style="border-radius:12px; border:none;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3?utm_source=generator" width="385" height="464" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <iframe style="border-radius:12px; border:none;" 
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3?utm_source=generator" 
+            width="385" height="464" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
   </div>
 
   <!-- AMIGOS -->
