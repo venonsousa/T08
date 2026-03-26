@@ -30,6 +30,7 @@ canvas {
   backdrop-filter: blur(10px);
   padding: 20px;
   box-sizing: border-box;
+  z-index: 20;
 }
 
 .profile {
@@ -91,84 +92,6 @@ canvas {
   100% { transform: rotate(360deg);}
 }
 
-/* GRID PRINCIPAL */
-#main-grid {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 30px;
-  position: fixed;
-  top: 50px;
-  left: 260px;
-  width: calc(100% - 260px);
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-/* TABELA MODERNA */
-.table-container {
-  background: rgba(10,10,10,0.85);
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 0 15px #00ffff;
-}
-
-.table-container h3 {
-  text-align: center;
-  margin: 0 0 10px 0;
-  font-size: 18px;
-  background: linear-gradient(45deg, #00ffff, #0077ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table td {
-  padding: 8px;
-  text-align: center;
-  border-bottom: 1px solid rgba(0,255,255,0.2);
-}
-
-/* SPOTIFY PLAYER */
-#spotify-player iframe {
-  border-radius: 12px;
-}
-
-/* AMIGOS */
-.friend-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  justify-items: center;
-  align-items: center;
-}
-.friend-grid div {
-  z-index: 1;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.friend-grid div:hover {
-  transform: scale(1.05);
-  z-index: 999;
-  box-shadow: 0 0 20px #00ffff;
-}
-.friend-grid img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 2px solid #00ffff;
-}
-.friend-grid span {
-  display: block;
-  margin-top: 5px;
-  color: #00ffff;
-  font-weight: bold;
-  cursor: pointer;
-}
-
 /* PAINÉIS */
 .panel {
   position: fixed;
@@ -180,7 +103,7 @@ table td {
   padding: 30px;
   box-sizing: border-box;
   overflow-y: auto;
-  z-index: 5;
+  z-index: 15;
   transform: translateX(0);
   opacity: 0;
   transition: right 0.5s ease, opacity 0.5s ease;
@@ -191,13 +114,21 @@ table td {
   opacity: 1;
 }
 
+/* GRID */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  counter-reset: card;
+}
+
 .card {
   position: relative;
   width: 260px;
   height: 218px;
   background: rgba(255,255,255,0.05);
   border-radius: 15px;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s;
   border: 1px solid rgba(0,255,255,0.2);
   display: flex;
   justify-content: center;
@@ -206,16 +137,24 @@ table td {
   cursor: pointer;
   z-index: 1;
 }
+
+.card::before {
+  counter-increment: card;
+  content: "#" counter(card);
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  font-size: 14px;
+  color: #00ffff;
+  font-weight: bold;
+  background: rgba(0,255,255,0.1);
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
 .card:hover {
   transform: scale(1.05);
   z-index: 999;
-  box-shadow: 0 0 20px #00ffff;
-}
-.card img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
 }
 
 /* MODAL */
@@ -231,6 +170,7 @@ table td {
   justify-content: center;
   align-items: center;
 }
+
 #modal img {
   width: 80%;
   max-width: 1088px;
@@ -238,6 +178,7 @@ table td {
   border-radius: 10px;
   object-fit: cover;
 }
+
 #modal .close-btn {
   position: absolute;
   top: 20px;
@@ -245,6 +186,63 @@ table td {
   font-size: 28px;
   color: white;
   cursor: pointer;
+  font-weight: bold;
+}
+
+/* MAIN GRID */
+#main-grid {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  width: calc(100% - 260px);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  z-index: 10;
+}
+
+/* TABLES MODERNAS */
+.table-container {
+  background: rgba(0,0,0,0.7);
+  padding: 10px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+/* AMIGOS */
+.friend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.friend-grid div {
+  transition: transform 0.3s;
+}
+
+.friend-grid div:hover {
+  transform: scale(1.05);
+}
+
+.friend-grid img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid #00ffff;
+}
+
+.friend-grid span {
+  display: block;
+  margin-top: 5px;
+  color: #00ffff;
   font-weight: bold;
 }
 
@@ -260,6 +258,7 @@ footer {
   font-size: 14px;
   box-sizing: border-box;
 }
+
 footer a {
   color: #00ffff;
   text-decoration: none;
@@ -270,39 +269,42 @@ footer a {
 
 <canvas id="canvas"></canvas>
 
-<!-- MENU LATERAL -->
+<!-- SIDEBAR -->
 <div class="sidebar">
   <div class="profile">
     <img src="https://i.pravatar.cc/150">
     <h2 class="gradient-text">iiCarvaozim</h2>
     <p class="gradient-text">Dev • Criador • Designer</p>
   </div>
-  <button class="menu-btn" onclick="backToHome();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
+
+  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
   <button class="menu-btn" onclick="openGFS(); playSound();"><div class="icon"></div> FUNDOS GFS</button>
   <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
 </div>
 
-<!-- GRID PRINCIPAL COM TABELAS -->
+<!-- MAIN GRID: Spotify + Amigos -->
 <div id="main-grid">
-  <div class="table-container">
-    <h3>Spotify</h3>
-    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3?utm_source=generator" width="385" height="464" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  <!-- SPOTIFY -->
+  <div class="table-container" id="spotify-container">
+    <h3 class="gradient-text">Spotify</h3>
+    <iframe style="border-radius:12px; border:none;" src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3?utm_source=generator" width="385" height="464" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
   </div>
 
-  <div class="table-container">
-    <h3>Amigos</h3>
+  <!-- AMIGOS -->
+  <div class="table-container" id="amigos-container">
+    <h3 class="gradient-text">Meus Amigos</h3>
     <div class="friend-grid">
-      <div><img src="https://i.pravatar.cc/120?img=10"><span onclick="toggleFriends(this)">Amigo 1</span></div>
-      <div><img src="https://i.pravatar.cc/120?img=11"><span onclick="toggleFriends(this)">Amigo 2</span></div>
-      <div><img src="https://i.pravatar.cc/120?img=12"><span onclick="toggleFriends(this)">Amigo 3</span></div>
-      <div><img src="https://i.pravatar.cc/120?img=13"><span onclick="toggleFriends(this)">Amigo 4</span></div>
+      <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
+      <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
+      <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
+      <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
     </div>
   </div>
 </div>
 
 <!-- PAINÉIS -->
 <div class="panel" id="panelGFS">
-  <button class="menu-btn" onclick="backToHome();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
+  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
   <div class="grid">
     <div class="card" id="cardGFS1"><span>Item</span></div>
     <div class="card"><span>Item</span></div>
@@ -312,7 +314,7 @@ footer a {
 </div>
 
 <div class="panel" id="panelStatic">
-  <button class="menu-btn" onclick="backToHome();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
+  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
   <div class="grid">
     <div class="card"><span>Item</span></div>
     <div class="card"><span>Item</span></div>
@@ -330,7 +332,7 @@ footer a {
 <!-- RODAPÉ -->
 <footer>
   <a href="https://xat.com/conexaosertanejoo" target="_blank">
-    Copyright @ - 2026 // Reservado iCarvãozim
+    Copyright @ - 2026 // Reservado iCarvãozim / Fundos / Pcback / Perfil
   </a>
 </footer>
 
@@ -342,17 +344,18 @@ function playSound() {
   audio.play();
 }
 
-// MENU
-function backToHome() {
+// FUNÇÕES DE MENU
+function pcBack() {
   document.getElementById("panelGFS").classList.remove("active");
   document.getElementById("panelStatic").classList.remove("active");
-  document.getElementById("main-grid").style.display = "flex";
+  document.getElementById("main-grid").style.display = "flex"; // mostra Spotify + Amigos
 }
 
 function openGFS() {
   document.getElementById("panelGFS").classList.add("active");
   document.getElementById("panelStatic").classList.remove("active");
   document.getElementById("main-grid").style.display = "none";
+
   const card = document.getElementById("cardGFS1");
   card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
   card.onclick = function() { openModal("https://xatimg.com/image/2z709uX4q7li.gif"); };
@@ -365,12 +368,6 @@ function openStatic() {
   resetParticlesStatic();
 }
 
-// TOGGLE AMIGOS
-function toggleFriends(span) {
-  const grid = span.closest('.table-container').querySelector('.friend-grid');
-  grid.style.display = (grid.style.display === "none") ? "grid" : "none";
-}
-
 // MODAL
 function openModal(src) { 
   document.getElementById("modal").style.display = "flex"; 
@@ -378,7 +375,7 @@ function openModal(src) {
 }
 function closeModal() { document.getElementById("modal").style.display = "none"; }
 
-// PARTICULAS
+// CANVAS PARTICULAS
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -395,12 +392,13 @@ class Particle {
     this.speedY=Math.random()-0.5;
   } 
   update(){
-    this.x+=this.speedX; this.y+=this.speedY; 
+    this.x+=this.speedX; 
+    this.y+=this.speedY; 
     if(this.x>canvas.width)this.x=0;
     if(this.x<0)this.x=canvas.width;
     if(this.y>canvas.height)this.y=0;
     if(this.y<0)this.y=canvas.height;
-  }
+  } 
   draw(){
     ctx.fillStyle="#00ffff";
     ctx.beginPath();
@@ -413,6 +411,5 @@ function resetParticlesStatic(count=100){particles=[];for(let i=0;i<count;i++){l
 function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateParticles);}
 animateParticles();
 </script>
-
 </body>
 </html>
