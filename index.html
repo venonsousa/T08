@@ -372,12 +372,19 @@ function playSound() {
 function pcBack() {
   document.getElementById("panelGFS").classList.remove("active");
   document.getElementById("panelStatic").classList.remove("active");
+  // mostrar página inicial
+  document.getElementById("playlist").style.display = "block";
+  document.getElementById("amigos").style.display = "block";
 }
 
 // FUNDOS GFS
 function openGFS() {
   document.getElementById("panelGFS").classList.add("active");
   document.getElementById("panelStatic").classList.remove("active");
+  // esconder página inicial
+  document.getElementById("playlist").style.display = "none";
+  document.getElementById("amigos").style.display = "none";
+
   const card = document.getElementById("cardGFS1");
   card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif" alt="GIF Fundos">';
   card.onclick = function() { openModal("https://xatimg.com/image/2z709uX4q7li.gif"); };
@@ -387,6 +394,8 @@ function openGFS() {
 function openStatic() {
   document.getElementById("panelStatic").classList.add("active");
   document.getElementById("panelGFS").classList.remove("active");
+  document.getElementById("playlist").style.display = "none";
+  document.getElementById("amigos").style.display = "none";
   resetParticlesStatic();
 }
 
