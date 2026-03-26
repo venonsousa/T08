@@ -91,6 +91,69 @@ canvas {
   100% { transform: rotate(360deg);}
 }
 
+/* GRID PRINCIPAL CENTRAL */
+#main-grid {
+  position: fixed;
+  top: 50px;
+  left: 260px;
+  width: calc(100% - 260px);
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* PLAYER E AMIGOS LADO A LADO */
+#player {
+  width: 385px;
+  height: 464px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 12px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#amigos {
+  width: 385px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 12px;
+  padding: 15px 10px;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease;
+}
+
+.friend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  align-items: center;
+}
+
+.friend-grid div {
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.friend-grid div:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #00ffff;
+}
+
+.friend-grid img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid #00ffff;
+}
+
+.friend-grid span {
+  display: block;
+  margin-top: 5px;
+  color: #00ffff;
+  font-weight: bold;
+}
+
 /* PAINÉIS */
 .panel {
   position: fixed;
@@ -103,7 +166,6 @@ canvas {
   box-sizing: border-box;
   overflow-y: auto;
   z-index: 5;
-  transform: translateX(0);
   opacity: 0;
   transition: right 0.5s ease, opacity 0.5s ease;
 }
@@ -113,21 +175,12 @@ canvas {
   opacity: 1;
 }
 
-/* GRID */
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  counter-reset: card;
-}
-
 .card {
   position: relative;
   width: 260px;
   height: 218px;
   background: rgba(255,255,255,0.05);
   border-radius: 15px;
-  transition: transform 0.3s, box-shadow 0.3s;
   border: 1px solid rgba(0,255,255,0.2);
   display: flex;
   justify-content: center;
@@ -135,20 +188,7 @@ canvas {
   overflow: hidden;
   cursor: pointer;
   z-index: 1;
-}
-
-.card::before {
-  counter-increment: card;
-  content: "#" counter(card);
-  position: absolute;
-  top: 10px;
-  left: 15px;
-  font-size: 14px;
-  color: #00ffff;
-  font-weight: bold;
-  background: rgba(0,255,255,0.1);
-  padding: 5px 10px;
-  border-radius: 10px;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .card:hover {
@@ -160,7 +200,6 @@ canvas {
 .card img {
   max-width: 100%;
   max-height: 100%;
-  object-fit: cover;
   border-radius: 10px;
 }
 
@@ -183,7 +222,6 @@ canvas {
   max-width: 1088px;
   height: auto;
   border-radius: 10px;
-  object-fit: cover;
 }
 
 #modal .close-btn {
@@ -196,76 +234,12 @@ canvas {
   font-weight: bold;
 }
 
-/* PLAYLIST SPOTIFY CENTRALIZADA */
-#playlist {
-  position: fixed;
-  top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 385px;
-  height: 464px;
-  background: rgba(0,0,0,0.7);
-  z-index: 10;
-  padding: 10px;
-  box-sizing: border-box;
-  overflow: hidden;
-  text-align: center;
-  border-radius: 12px;
-}
-
-/* AMIGOS CENTRALIZADOS ABAIXO DA PLAYLIST */
-#amigos {
-  position: fixed;
-  top: 524px; /* playlist top + altura + 10px gap */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 385px;
-  text-align: center;
-  background: rgba(0,0,0,0.5);
-  z-index: 10;
-  padding: 15px 0;
-}
-
-.friend-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 20px;
-  justify-items: center;
-  align-items: center;
-}
-
-.friend-grid div {
-  z-index: 1;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.friend-grid div:hover {
-  transform: scale(1.05);
-  z-index: 999;
-  box-shadow: 0 0 20px #00ffff;
-}
-
-.friend-grid img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 2px solid #00ffff;
-}
-
-.friend-grid span {
-  display: block;
-  margin-top: 5px;
-  color: #00ffff;
-  font-weight: bold;
-}
-
-/* RODAPÉ CENTRALIZADO */
+/* RODAPÉ */
 footer {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 385px;
+  left: 260px;
+  width: calc(100% - 260px);
   text-align: center;
   padding: 10px 0;
   background: rgba(0,0,0,0.6);
@@ -283,26 +257,29 @@ footer a {
 
 <canvas id="canvas"></canvas>
 
-<!-- PLAYLIST SPOTIFY -->
-<div id="playlist">
-  <h3 class="gradient-text">Playlist Spotify</h3>
-  <hr class="divider">
-  <iframe data-testid="embed-iframe" style="border-radius:12px" 
-          src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3?utm_source=generator" 
-          width="385" height="464" frameBorder="0" allowfullscreen 
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
-  </iframe>
-</div>
+<!-- GRID PRINCIPAL -->
+<div id="main-grid">
+  <!-- SPOTIFY PLAYER -->
+  <div id="player">
+    <h3 class="gradient-text">Playlist Spotify</h3>
+    <hr class="divider">
+    <iframe data-testid="embed-iframe" style="border-radius:12px" 
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3?utm_source=generator" 
+            width="365" height="440" frameBorder="0" allowfullscreen 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+    </iframe>
+  </div>
 
-<!-- AMIGOS -->
-<div id="amigos">
-  <h3 class="gradient-text">Meus Amigos</h3>
-  <hr class="divider">
-  <div class="friend-grid">
-    <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
-    <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
-    <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
-    <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
+  <!-- AMIGOS -->
+  <div id="amigos">
+    <h3 class="gradient-text">Meus Amigos</h3>
+    <hr class="divider">
+    <div class="friend-grid">
+      <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
+      <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
+      <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
+      <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
+    </div>
   </div>
 </div>
 
@@ -314,7 +291,7 @@ footer a {
     <p class="gradient-text">Dev • Criador • Designer</p>
   </div>
 
-  <button class="menu-btn" onclick="pcBack();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
+  <button class="menu-btn" onclick="toggleFriends();"><div class="icon"></div> INÍCIO</button>
   <button class="menu-btn" onclick="openGFS(); playSound();"><div class="icon"></div> FUNDOS GFS</button>
   <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
 </div>
@@ -360,34 +337,33 @@ function playSound() {
 }
 
 // FUNÇÕES DE MENU
-function pcBack() {
-  document.getElementById("panelGFS").classList.remove("active");
-  document.getElementById("panelStatic").classList.remove("active");
-  document.getElementById("playlist").style.display = "block";
-  document.getElementById("amigos").style.display = "block";
+function toggleFriends() {
+  const amigos = document.getElementById("amigos");
+  if (amigos.style.display === "none") {
+    amigos.style.display = "block";
+  } else {
+    amigos.style.display = "none";
+  }
 }
 
 function openGFS() {
   document.getElementById("panelGFS").classList.add("active");
   document.getElementById("panelStatic").classList.remove("active");
-  document.getElementById("playlist").style.display = "none";
-  document.getElementById("amigos").style.display = "none";
-
-  const card = document.getElementById("cardGFS1");
-  card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
-  card.onclick = function() { openModal("https://xatimg.com/image/2z709uX4q7li.gif"); };
+  document.getElementById("main-grid").style.display = "none";
 }
 
 function openStatic() {
   document.getElementById("panelStatic").classList.add("active");
   document.getElementById("panelGFS").classList.remove("active");
-  document.getElementById("playlist").style.display = "none";
-  document.getElementById("amigos").style.display = "none";
+  document.getElementById("main-grid").style.display = "none";
   resetParticlesStatic();
 }
 
 // MODAL
-function openModal(src) { document.getElementById("modal").style.display = "flex"; document.getElementById("modalImg").src = src; }
+function openModal(src) { 
+  document.getElementById("modal").style.display = "flex"; 
+  document.getElementById("modalImg").src = src; 
+}
 function closeModal() { document.getElementById("modal").style.display = "none"; }
 
 // CANVAS PARTICULAS
@@ -398,7 +374,29 @@ window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
 let particles = [];
-class Particle { constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.size=Math.random()*2+1; this.speedX=Math.random()-0.5; this.speedY=Math.random()-0.5;} update(){this.x+=this.speedX; this.y+=this.speedY; if(this.x>canvas.width)this.x=0;if(this.x<0)this.x=canvas.width;if(this.y>canvas.height)this.y=0;if(this.y<0)this.y=canvas.height;} draw(){ctx.fillStyle="#00ffff";ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill();} }
+class Particle { 
+  constructor(){
+    this.x=Math.random()*canvas.width; 
+    this.y=Math.random()*canvas.height; 
+    this.size=Math.random()*2+1; 
+    this.speedX=Math.random()-0.5; 
+    this.speedY=Math.random()-0.5;
+  } 
+  update(){
+    this.x+=this.speedX; this.y+=this.speedY; 
+    if(this.x>canvas.width)this.x=0;
+    if(this.x<0)this.x=canvas.width;
+    if(this.y>canvas.height)this.y=0;
+    if(this.y<0)this.y=canvas.height;
+  } 
+  draw(){
+    ctx.fillStyle="#00ffff";
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fill();
+  }
+}
+
 function initParticles(count=100){particles=[];for(let i=0;i<count;i++)particles.push(new Particle());}
 function resetParticlesStatic(count=100){particles=[];for(let i=0;i<count;i++){let p=new Particle();p.speedX=0;p.speedY=0;particles.push(p);} }
 function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateParticles);}
