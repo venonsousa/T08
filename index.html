@@ -196,7 +196,7 @@ canvas {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 650px;
+  width: 700px;
   height: 500px;
   background: rgba(0,0,0,0.8);
   border-radius: 20px;
@@ -213,6 +213,7 @@ canvas {
   display: flex;
   gap: 15px;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
 .menu-option {
@@ -234,29 +235,26 @@ canvas {
 /* CONTEÚDO DO CARD */
 #card-content {
   display: flex;
+  justify-content: space-around;
+  align-items: center;
   gap: 20px;
   flex: 1;
 }
 
-/* ESPAÇO PARA PANEL */
+/* PAINÉIS INTERNOS */
 .menu-panel {
   display: none;
   background: rgba(0,255,255,0.05);
   padding: 15px;
   border-radius: 15px;
   flex: 1;
+  max-height: 450px;
   overflow-y: auto;
   color: #00ffff;
 }
 
 .menu-panel.active {
   display: block;
-}
-
-/* AJUSTE TABLE CONTAINERS DENTRO DO CARD */
-#spotify-inner, #friends-inner {
-  flex: 1;
-  overflow-y: auto;
 }
 
 /* FRIEND GRID */
@@ -266,30 +264,9 @@ canvas {
   gap: 10px;
   justify-items: center;
   align-items: center;
-  z-index: 10;
 }
-
-.friend-grid div {
-  transition: transform 0.3s;
-}
-
-.friend-grid div:hover {
-  transform: scale(1.05);
-}
-
-.friend-grid img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 2px solid #00ffff;
-}
-
-.friend-grid span {
-  display: block;
-  margin-top: 5px;
-  color: #00ffff;
-  font-weight: bold;
-}
+.friend-grid img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #00ffff; }
+.friend-grid span { margin-top: 5px; font-weight: bold; color: #00ffff; }
 
 /* RODAPÉ */
 footer {
@@ -304,10 +281,7 @@ footer {
   box-sizing: border-box;
 }
 
-footer a {
-  color: #00ffff;
-  text-decoration: none;
-}
+footer a { color: #00ffff; text-decoration: none; }
 </style>
 </head>
 <body>
@@ -351,11 +325,13 @@ footer a {
 <!-- QUADRADO CENTRAL -->
 <div id="main-card">
   <div id="inner-menu">
-    <button class="menu-option" onclick="showAbout()">Sobre mim</button>
-    <button class="menu-option" onclick="showContact()">Onde me encontrar</button>
+    <button class="menu-option" onclick="showPanel('about')">Sobre mim</button>
+    <button class="menu-option" onclick="showPanel('contact')">Onde me encontrar</button>
+    <button class="menu-option" onclick="showPanel('friends-panel')">Amigos</button>
   </div>
 
   <div id="card-content">
+    <!-- SPOTIFY -->
     <div class="table-container" id="spotify-inner">
       <h3 class="gradient-text">Spotify</h3>
       <iframe style="border-radius:12px; border:none;" 
@@ -363,16 +339,7 @@ footer a {
               width="300" height="380" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
-    <div class="table-container" id="friends-inner">
-      <h3 class="gradient-text">Meus Amigos</h3>
-      <div class="friend-grid">
-        <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
-        <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
-        <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
-        <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
-      </div>
-    </div>
-
+    <!-- PAINÉIS INTERNOS -->
     <div id="about" class="menu-panel">
       <p>iiscarvaozim do xat.com</p>
     </div>
@@ -380,6 +347,16 @@ footer a {
     <div id="contact" class="menu-panel">
       <label for="trade-link">Trade:</label>
       <input type="text" id="trade-link" value="https://xa.com/trade" readonly onclick="this.select()">
+    </div>
+
+    <div id="friends-panel" class="menu-panel">
+      <h3 class="gradient-text">Meus Amigos</h3>
+      <div class="friend-grid">
+        <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
+        <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
+        <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
+        <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
+      </div>
     </div>
   </div>
 </div>
@@ -404,7 +381,7 @@ function playSound() {
   audio.play();
 }
 
-// FUNÇÕES DE MENU
+// MENU DE PAINÉIS
 function pcBack() {
   document.getElementById("panelGFS").classList.remove("active");
   document.getElementById("panelStatic").classList.remove("active");
@@ -415,7 +392,6 @@ function openGFS() {
   document.getElementById("panelGFS").classList.add("active");
   document.getElementById("panelStatic").classList.remove("active");
   document.getElementById("main-card").style.display = "none";
-
   const card = document.getElementById("cardGFS1");
   card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
   card.onclick = function() { openModal("https://xatimg.com/image/2z709uX4q7li.gif"); };
@@ -436,14 +412,13 @@ function openModal(src) {
 function closeModal() { document.getElementById("modal").style.display = "none"; }
 
 // MENU INTERNO
-function showAbout() {
-  document.getElementById("about").classList.add("active");
-  document.getElementById("contact").classList.remove("active");
+function showPanel(panelId) {
+  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
 }
-function showContact() {
-  document.getElementById("contact").classList.add("active");
-  document.getElementById("about").classList.remove("active");
-}
+
+// Inicialmente mostra "Sobre mim"
+showPanel('about');
 
 // CANVAS PARTICULAS
 const canvas = document.getElementById("canvas");
@@ -481,9 +456,6 @@ function resetParticlesStatic(count=100){particles=[];for(let i=0;i<count;i++){l
 function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateParticles);}
 initParticles();
 animateParticles();
-
-// Inicialmente mostrar "Sobre mim"
-showAbout();
 </script>
 
 </body>
