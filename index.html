@@ -10,10 +10,10 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   background-image: url('https://xatimg.com/image/2z709uX4q7li.gif');
-  background-size: cover;       /* cobre toda a tela mantendo proporção */
-  background-position: center;  /* centraliza a imagem */
-  background-repeat: no-repeat; /* evita repetição */
-  background-attachment: fixed; /* fixa a imagem ao rolar a página */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: white;
   overflow-x: hidden;
 }
@@ -192,13 +192,13 @@ canvas {
 /* FRIEND GRID */
 .friend-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
   gap: 10px;
   justify-items: center;
   align-items: center;
 }
 .friend-grid div {
-  width: 100px;
+  width: 70px;
   height: 100px;
   display: flex;
   flex-direction: column;
@@ -207,12 +207,12 @@ canvas {
   transition: transform 0.3s;
 }
 .friend-grid img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   border: 2px solid #00ffff;
 }
-.friend-grid span { margin-top: 5px; font-weight: bold; color: #00ffff; }
+.friend-grid span { margin-top: 5px; font-weight: bold; color: #00ffff; text-align: center; }
 
 /* RODAPÉ */
 footer {
