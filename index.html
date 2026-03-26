@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interface Premium</title>
 <style>
-/* ===== GERAL ===== */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -20,7 +19,7 @@ canvas {
   z-index: -1;
 }
 
-/* ===== SIDEBAR ===== */
+/* SIDEBAR */
 .sidebar {
   position: fixed;
   left: 0;
@@ -50,7 +49,7 @@ canvas {
   display: inline-block;
 }
 
-/* ===== BOTÕES ===== */
+/* BOTÕES */
 .menu-btn {
   margin-top: 10px;
   padding: 8px 10px;
@@ -92,19 +91,18 @@ canvas {
   100% { transform: rotate(360deg);}
 }
 
-/* ===== PAINÉIS ===== */
+/* PAINÉIS */
 .panel {
   position: fixed;
-  top: 0; 
+  top: 0;
   right: -100%;
-  width: calc(50%); /* painel ocupar meia tela direita */
-  height: 100%; 
+  width: calc(100% - 260px);
+  height: 100%;
   background: rgba(10,10,10,0.95);
   padding: 30px;
   box-sizing: border-box;
   overflow-y: auto;
   z-index: 5;
-  
   transform: translateX(0);
   opacity: 0;
   transition: right 0.5s ease, opacity 0.5s ease;
@@ -115,13 +113,12 @@ canvas {
   opacity: 1;
 }
 
-/* ===== GRID FUNDOS ===== */
+/* GRID */
 .grid {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
   counter-reset: card;
-  justify-content: flex-start;
 }
 
 .card {
@@ -167,7 +164,7 @@ canvas {
   border-radius: 10px;
 }
 
-/* ===== MODAL ===== */
+/* MODAL */
 #modal {
   display: none;
   position: fixed;
@@ -199,12 +196,12 @@ canvas {
   font-weight: bold;
 }
 
-/* ===== PLAYLIST ===== */
+/* PLAYLIST */
 #playlist {
   position: fixed;
   top: 0;
   left: 260px;
-  width: calc(50%); /* ocupar meia tela */
+  width: calc(100% - 260px);
   height: 420px;
   background: rgba(0,0,0,0.7);
   z-index: 10;
@@ -221,17 +218,16 @@ canvas {
   border: none;
 }
 
-/* ===== MEIA COLUNA AMIGOS ===== */
-#friends-col {
+/* AMIGOS */
+#amigos {
   position: fixed;
   top: 420px;
   left: 260px;
-  width: calc(50%);
-  height: calc(100% - 420px);
+  width: calc(100% - 260px);
+  text-align: center;
   background: rgba(0,0,0,0.5);
-  padding: 15px;
-  box-sizing: border-box;
-  overflow-y: auto;
+  z-index: 10;
+  padding: 15px 0;
 }
 
 .friend-grid {
@@ -267,7 +263,7 @@ canvas {
   font-weight: bold;
 }
 
-/* ===== RODAPÉ ===== */
+/* RODAPÉ */
 footer {
   position: fixed;
   bottom: 0;
@@ -306,8 +302,8 @@ footer a {
   </iframe>
 </div>
 
-<!-- MEIA COLUNA AMIGOS -->
-<div id="friends-col">
+<!-- AMIGOS -->
+<div id="amigos">
   <h3 class="gradient-text">Meus Amigos</h3>
   <hr class="divider">
   <div class="friend-grid">
@@ -364,26 +360,26 @@ footer a {
 </footer>
 
 <script>
-// ===== SOM =====
+// SOM
 function playSound() {
   const audio = new Audio("https://freesound.org/data/previews/341/341695_6245054-lq.mp3");
   audio.volume = 0.3;
   audio.play();
 }
 
-// ===== MENU =====
+// FUNÇÕES DE MENU
 function pcBack() {
   document.getElementById("panelGFS").classList.remove("active");
   document.getElementById("panelStatic").classList.remove("active");
   document.getElementById("playlist").style.display = "block";
-  document.getElementById("friends-col").style.display = "block";
+  document.getElementById("amigos").style.display = "block";
 }
 
 function openGFS() {
   document.getElementById("panelGFS").classList.add("active");
   document.getElementById("panelStatic").classList.remove("active");
   document.getElementById("playlist").style.display = "none";
-  document.getElementById("friends-col").style.display = "none";
+  document.getElementById("amigos").style.display = "none";
 
   const card = document.getElementById("cardGFS1");
   card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
@@ -394,20 +390,15 @@ function openStatic() {
   document.getElementById("panelStatic").classList.add("active");
   document.getElementById("panelGFS").classList.remove("active");
   document.getElementById("playlist").style.display = "none";
-  document.getElementById("friends-col").style.display = "none";
+  document.getElementById("amigos").style.display = "none";
   resetParticlesStatic();
 }
 
-// ===== MODAL =====
-function openModal(src) {
-  document.getElementById("modal").style.display = "flex";
-  document.getElementById("modalImg").src = src;
-}
-function closeModal() {
-  document.getElementById("modal").style.display = "none";
-}
+// MODAL
+function openModal(src) { document.getElementById("modal").style.display = "flex"; document.getElementById("modalImg").src = src; }
+function closeModal() { document.getElementById("modal").style.display = "none"; }
 
-// ===== PARTICULAS =====
+// CANVAS PARTICULAS
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -415,32 +406,10 @@ window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
 let particles = [];
-class Particle {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2 + 1;
-    this.speedX = Math.random() - 0.5;
-    this.speedY = Math.random() - 0.5;
-  }
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if (this.x > canvas.width) this.x = 0;
-    if (this.x < 0) this.x = canvas.width;
-    if (this.y > canvas.height) this.y = 0;
-    if (this.y < 0) this.y = canvas.height;
-  }
-  draw() {
-    ctx.fillStyle = "#00ffff";
-    ctx.beginPath();
-    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    ctx.fill();
-  }
-}
-function initParticles(count=100) { particles=[]; for(let i=0;i<count;i++) particles.push(new Particle()); }
-function resetParticlesStatic(count=100) { particles=[]; for(let i=0;i<count;i++){ let p=new Particle(); p.speedX=0; p.speedY=0; particles.push(p); } }
-function animateParticles() {ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animateParticles);}
+class Particle { constructor(){ this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.size=Math.random()*2+1; this.speedX=Math.random()-0.5; this.speedY=Math.random()-0.5;} update(){this.x+=this.speedX; this.y+=this.speedY; if(this.x>canvas.width)this.x=0;if(this.x<0)this.x=canvas.width;if(this.y>canvas.height)this.y=0;if(this.y<0)this.y=canvas.height;} draw(){ctx.fillStyle="#00ffff";ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fill();}}
+function initParticles(count=100){particles=[];for(let i=0;i<count;i++)particles.push(new Particle());}
+function resetParticlesStatic(count=100){particles=[];for(let i=0;i<count;i++){let p=new Particle();p.speedX=0;p.speedY=0;particles.push(p);}}
+function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateParticles);}
 animateParticles();
 </script>
 </body>
