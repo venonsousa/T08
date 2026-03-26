@@ -159,7 +159,7 @@ canvas {
 }
 
 /* MENU INTERNO */
-#inner-menu { display: flex; gap: 15px; justify-content: center; margin-bottom: 10px; }
+#inner-menu { display: flex; gap: 15px; justify-content: center; margin-bottom: 10px; flex-wrap: wrap; }
 .menu-option {
   background: linear-gradient(45deg, #00ffff, #0077ff);
   border: none;
@@ -173,10 +173,10 @@ canvas {
 .menu-option:hover { transform: scale(1.05); box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset; }
 
 /* CONTEÚDO DO CARD */
-#card-content { display: flex; justify-content: space-around; align-items: center; gap: 20px; flex: 1; }
+#card-content { display: flex; justify-content: space-around; align-items: center; gap: 20px; flex: 1; flex-wrap: wrap; }
 
 /* PAINÉIS INTERNOS */
-.menu-panel { display: none; background: rgba(0,255,255,0.05); padding: 15px; border-radius: 15px; flex: 1; max-height: 450px; overflow-y: auto; color: #00ffff; }
+.menu-panel { display: none; background: rgba(0,255,255,0.05); padding: 15px; border-radius: 15px; flex: 1; max-height: 450px; overflow-y: auto; color: #00ffff; min-width: 280px; }
 .menu-panel.active { display: block; }
 
 /* FRIEND GRID */
@@ -196,12 +196,7 @@ canvas {
   justify-content: center;
   transition: transform 0.3s;
 }
-.friend-grid img {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: 2px solid #00ffff;
-}
+.friend-grid img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #00ffff; }
 .friend-grid span { margin-top: 5px; font-weight: bold; color: #00ffff; text-align: center; }
 
 /* RODAPÉ */
@@ -217,6 +212,17 @@ footer {
   box-sizing: border-box;
 }
 footer a { color: #00ffff; text-decoration: none; }
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .sidebar { width: 100%; height: auto; position: relative; display: flex; flex-direction: row; justify-content: space-around; padding: 10px; }
+  footer { left: 0; width: 100%; }
+  #main-card { width: 95%; height: auto; top: 60%; transform: translate(-50%, -50%); padding: 10px; }
+  #card-content { flex-direction: column; gap: 15px; }
+  #inner-menu { flex-direction: column; gap: 10px; }
+  .menu-panel { min-width: 100%; max-height: 300px; }
+  iframe { width: 100% !important; height: 300px !important; }
+}
 </style>
 </head>
 <body>
@@ -265,7 +271,6 @@ footer a { color: #00ffff; text-decoration: none; }
   </div>
 
   <div id="card-content">
-    <!-- SPOTIFY -->
     <div class="table-container" id="spotify-inner">
       <h3 class="gradient-text">Spotify</h3>
       <iframe style="border-radius:12px; border:none;" 
@@ -273,7 +278,6 @@ footer a { color: #00ffff; text-decoration: none; }
               width="300" height="380" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
-    <!-- PAINÉIS INTERNOS -->
     <div id="about" class="menu-panel"><p>iiscarvaozim do xat.com</p></div>
     <div id="contact" class="menu-panel">
       <label for="trade-link">Trade:</label>
