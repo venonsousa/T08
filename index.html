@@ -103,7 +103,7 @@ canvas {
   transform: translateX(0);
   opacity: 0;
   transition: right 0.5s ease, opacity 0.5s ease;
-  display: none; /* Inicialmente oculto */
+  display: none;
 }
 
 .panel.active {
@@ -285,20 +285,19 @@ footer a {
 
 <canvas id="canvas"></canvas>
 
-<!-- PLAYLIST -->
+<!-- PLAYLIST COM VÍDEO E SPOTIFY -->
 <div id="playlist">
-  <h3 class="gradient-text">Playlist Chris Brown</h3>
+  <h3 class="gradient-text">Vídeo Extra</h3>
   <hr class="divider">
-  <iframe width="100%" height="200" 
-          src="https://www.youtube.com/embed?listType=playlist&list=PLxyz12345ABCDE" 
-          title="Chris Brown Playlist" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-  </iframe>
-
-  <h3 class="gradient-text" style="margin-top:15px;">Vídeo Extra</h3>
   <iframe width="100%" height="200" 
           src="https://www.youtube.com/embed/2PDATLHeeV8" 
           title="Vídeo Adicional" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
   </iframe>
+
+  <h3 class="gradient-text" style="margin-top:15px;">Playlist Spotify</h3>
+  <hr class="divider">
+  <iframe src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3?utm_source=generator"
+          width="100%" height="200" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 </div>
 
 <!-- AMIGOS -->
@@ -372,7 +371,6 @@ function pcBack() {
   document.getElementById("panelGFS").style.display = "none";
   document.getElementById("panelStatic").classList.remove("active");
   document.getElementById("panelStatic").style.display = "none";
-
   document.getElementById("playlist").style.display = "block";
   document.getElementById("amigos").style.display = "block";
 }
@@ -381,14 +379,11 @@ function openGFS() {
   const panel = document.getElementById("panelGFS");
   panel.style.display = "block";
   panel.classList.add("active");
-
   document.getElementById("panelStatic").style.display = "none";
   document.getElementById("panelStatic").classList.remove("active");
-
   const card = document.getElementById("cardGFS1");
   card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
   card.onclick = function() { openModal("https://xatimg.com/image/2z709uX4q7li.gif"); };
-
   document.getElementById("playlist").style.display = "none";
   document.getElementById("amigos").style.display = "none";
 }
@@ -397,12 +392,9 @@ function openStatic() {
   const panel = document.getElementById("panelStatic");
   panel.style.display = "block";
   panel.classList.add("active");
-
   document.getElementById("panelGFS").style.display = "none";
   document.getElementById("panelGFS").classList.remove("active");
-
   resetParticlesStatic();
-
   document.getElementById("playlist").style.display = "none";
   document.getElementById("amigos").style.display = "none";
 }
