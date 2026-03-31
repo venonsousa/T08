@@ -3,399 +3,269 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interface Premium</title>
+<title>Interface INSANA</title>
+
 <style>
-/* RESET & BODY */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-image: url('https://xatimg.com/image/2z709uX4q7li.gif');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  font-family: Arial;
+  background: url('https://xatimg.com/image/2z709uX4q7li.gif') center/cover fixed;
   color: white;
-  overflow-x: hidden;
-}
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
 }
 
 /* SIDEBAR */
 .sidebar {
   position: fixed;
-  left: 0;
-  top: 0;
-  width: 260px;
+  width: 250px;
   height: 100%;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.8);
   padding: 20px;
-  box-sizing: border-box;
-  z-index: 20;
-}
-.profile { text-align: center; }
-.profile img { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #00ffff; }
-.gradient-text {
-  background: linear-gradient(45deg, #00ffff, #0077ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
 }
 
-/* BOTÕES */
+/* BOTÃO */
 .menu-btn {
-  margin-top: 10px;
-  padding: 8px 10px;
-  font-size: 14px;
-  height: 40px;
-  background: linear-gradient(45deg, #00ffff, #0077ff);
-  color: black;
-  border: none;
   width: 100%;
-  border-radius: 15px;
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
   cursor: pointer;
   font-weight: bold;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.4s ease;
 }
-.menu-btn:hover { transform: scale(1.05); box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset; }
-.menu-btn .icon { margin-right: 8px; width: 16px; height: 16px; border: 2px solid black; border-radius: 50%; border-left: 3px solid black; animation: spin 1.5s linear infinite; }
-@keyframes spin { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
 
-/* PAINÉIS */
-.panel {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: calc(100% - 260px);
-  height: 100%;
-  background: rgba(10,10,10,0.95);
-  padding: 30px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  z-index: 15;
-  opacity: 0;
-  transition: right 0.5s ease, opacity 0.5s ease;
+/* MAIN */
+#main-card {
+  margin-left: 260px;
+  padding: 20px;
 }
-.panel.active { right: 0; opacity: 1; }
 
-/* GRID */
-.grid { display: flex; flex-wrap: wrap; gap: 15px; counter-reset: card; }
-.card {
-  position: relative;
-  width: 260px;
-  height: 218px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 15px;
-  transition: transform 0.3s;
-  border: 1px solid rgba(0,255,255,0.2);
+/* NETFLIX */
+.netflix-row { position: relative; }
+
+.netflix-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  cursor: pointer;
-  z-index: 1;
+  overflow-x: auto;
+  gap: 15px;
+  padding: 10px;
 }
-.card::before {
-  counter-increment: card;
-  content: "#" counter(card);
+
+.netflix-container::-webkit-scrollbar { display: none; }
+
+/* SETAS */
+.arrow {
   position: absolute;
-  top: 10px;
-  left: 15px;
-  font-size: 14px;
-  color: #00ffff;
-  font-weight: bold;
-  background: rgba(0,255,255,0.1);
-  padding: 5px 10px;
-  border-radius: 10px;
+  top: 40%;
+  font-size: 30px;
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: cyan;
+  cursor: pointer;
+  z-index: 10;
 }
-.card:hover { transform: scale(1.05); z-index: 999; }
-.card img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; }
+
+.arrow.left { left: 0; }
+.arrow.right { right: 0; }
+
+/* CARD */
+.card {
+  min-width: 220px;
+  height: 150px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.4s;
+}
+
+.card:hover img { transform: scale(1.1); }
+
+/* FAVORITO */
+.fav-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.fav-btn.active { color: red; }
 
 /* MODAL */
 #modal {
   display: none;
   position: fixed;
   z-index: 9999;
-  left: 0;
-  top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0.9);
   justify-content: center;
   align-items: center;
-}
-#modal img { width: 80%; max-width: 1088px; height: auto; border-radius: 10px; object-fit: cover; }
-#modal .close-btn { position: absolute; top: 20px; right: 30px; font-size: 28px; color: white; cursor: pointer; font-weight: bold; }
-
-/* QUADRADO CENTRAL */
-#main-card {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 700px;
-  height: 500px;
-  background: rgba(0,0,0,0.8);
-  border-radius: 20px;
-  padding: 20px;
-  box-sizing: border-box;
-  display: flex;
   flex-direction: column;
-  gap: 15px;
-  z-index: 25;
 }
 
-/* MENU INTERNO */
-#inner-menu { display: flex; gap: 15px; justify-content: center; margin-bottom: 10px; flex-wrap: wrap; }
-.menu-option {
-  background: linear-gradient(45deg, #00ffff, #0077ff);
-  border: none;
-  color: black;
-  padding: 10px 15px;
+/* IMAGEM GRANDE */
+#modalImg {
+  width: 1107px;
+  height: 678px;
+  object-fit: cover;
   border-radius: 10px;
+  box-shadow: 0 0 30px cyan;
+}
+
+/* FECHAR */
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 30px;
+  color: cyan;
   cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
 }
-.menu-option:hover { transform: scale(1.05); box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff inset; }
 
-/* CONTEÚDO DO CARD */
-#card-content { display: flex; justify-content: space-around; align-items: center; gap: 20px; flex: 1; flex-wrap: wrap; }
-
-/* PAINÉIS INTERNOS */
-.menu-panel { display: none; background: rgba(0,255,255,0.05); padding: 15px; border-radius: 15px; flex: 1; max-height: 450px; overflow-y: auto; color: #00ffff; min-width: 280px; }
-.menu-panel.active { display: block; }
-
-/* FRIEND GRID */
-.friend-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-  gap: 10px;
-  justify-items: center;
-  align-items: center;
+/* DOWNLOAD */
+.download-btn {
+  margin-top: 10px;
+  padding: 10px;
+  cursor: pointer;
+  background: cyan;
+  border: none;
 }
-.friend-grid div {
-  width: 70px;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s;
-}
-.friend-grid img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #00ffff; }
-.friend-grid span { margin-top: 5px; font-weight: bold; color: #00ffff; text-align: center; }
-
-/* RODAPÉ */
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 260px;
-  width: calc(100% - 260px);
-  text-align: center;
-  padding: 10px 0;
-  background: rgba(0,0,0,0.6);
-  font-size: 14px;
-  box-sizing: border-box;
-}
-footer a { color: #00ffff; text-decoration: none; }
 
 /* RESPONSIVO */
-@media (max-width: 768px) {
-  .sidebar { width: 100%; height: auto; position: relative; display: flex; flex-direction: row; justify-content: space-around; padding: 10px; }
-  footer { left: 0; width: 100%; }
-  #main-card { width: 95%; height: auto; top: 60%; transform: translate(-50%, -50%); padding: 10px; }
-  #card-content { flex-direction: column; gap: 15px; }
-  #inner-menu { flex-direction: column; gap: 10px; }
-  .menu-panel { min-width: 100%; max-height: 300px; }
-  iframe { width: 100% !important; height: 300px !important; }
+@media (max-width: 1200px) {
+  #modalImg {
+    width: 90%;
+    height: auto;
+  }
 }
 </style>
 </head>
+
 <body>
 
-<canvas id="canvas"></canvas>
-
-<!-- SIDEBAR -->
 <div class="sidebar">
-  <div class="profile">
-    <img src="https://i.pravatar.cc/150">
-    <h2 class="gradient-text">iiCarvaozim</h2>
-    <p class="gradient-text">Dev • Criador • Designer</p>
-  </div>
-  <button class="menu-btn" onclick="showMainCard();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
-  <button class="menu-btn" onclick="openGFS(); playSound();"><div class="icon"></div> FUNDOS GFS</button>
-  <button class="menu-btn" onclick="openStatic();"><div class="icon"></div> FUNDOS ESTÁTICOS</button>
+  <button class="menu-btn">INÍCIO</button>
 </div>
 
-<!-- PAINÉIS -->
-<div class="panel" id="panelGFS">
-  <button class="menu-btn" onclick="showMainCard();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
-  <div class="grid">
-    <div class="card" id="cardGFS1"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-  </div>
-</div>
-
-<div class="panel" id="panelStatic">
-  <button class="menu-btn" onclick="showMainCard();"><div class="icon"></div> VOLTAR AO INÍCIO</button>
-  <div class="grid">
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-    <div class="card"></div>
-  </div>
-</div>
-
-<!-- QUADRADO CENTRAL -->
 <div id="main-card">
-  <div id="inner-menu">
-    <button class="menu-option" onclick="showPanel('about')">Sobre mim</button>
-    <button class="menu-option" onclick="showPanel('contact')">Onde me encontrar</button>
-    <button class="menu-option" onclick="showPanel('friends-panel')">Amigos</button>
-  </div>
 
-  <div id="card-content">
-    <div class="table-container" id="spotify-inner">
-      <h3 class="gradient-text">Spotify</h3>
-      <iframe style="border-radius:12px; border:none;" 
-              src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcQyYo9QwAM3" 
-              width="300" height="380" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
+<h2>Fundos Estáticos</h2>
 
-    <div id="about" class="menu-panel">
-      <p style="text-align:center; font-size:16px;">iiscarvaozim do xat.com</p>
-    </div>
+<div class="netflix-row">
+<button class="arrow left" onclick="scrollRow(-1)">❮</button>
+<button class="arrow right" onclick="scrollRow(1)">❯</button>
 
-    <div id="contact" class="menu-panel">
-      <label for="trade-link">Trade:</label>
-      <input type="text" id="trade-link" value="https://xa.com/trade" readonly onclick="this.select()">
-    </div>
+<div class="netflix-container" id="netflixList"></div>
 
-    <div id="friends-panel" class="menu-panel">
-      <h3 class="gradient-text">Meus Amigos</h3>
-      <div class="friend-grid">
-        <div><img src="https://i.pravatar.cc/120?img=10"><span>Amigo 1</span></div>
-        <div><img src="https://i.pravatar.cc/120?img=11"><span>Amigo 2</span></div>
-        <div><img src="https://i.pravatar.cc/120?img=12"><span>Amigo 3</span></div>
-        <div><img src="https://i.pravatar.cc/120?img=13"><span>Amigo 4</span></div>
-      </div>
-    </div>
-  </div>
+</div>
 </div>
 
 <!-- MODAL -->
 <div id="modal">
-  <span class="close-btn" onclick="closeModal()">×</span>
+  <span class="close-btn" onclick="closeModal()">✕</span>
   <img id="modalImg">
+  <a id="downloadLink" download target="_blank">
+    <button class="download-btn">BAIXAR</button>
+  </a>
 </div>
 
-<footer>
-  <a href="https://xat.com/conexaosertanejoo" target="_blank">
-    Copyright @ - 2026 // Reservado iCarvãozim / Fundos / Pcback / Perfil
-  </a>
-</footer>
-
 <script>
-// BLOQUEIO: botão direito e Ctrl+U
-document.addEventListener('contextmenu', e => e.preventDefault());
-document.addEventListener('keydown', e => { if(e.ctrlKey && e.key.toLowerCase() === 'u'){ e.preventDefault(); } });
+// LISTA DE IMAGENS
+const imagens = [
+"https://xatimg.com/image/LhPTjinBD63k.png",
+"https://xatimg.com/image/jEluPHc8kDBS.png",
+"https://xatimg.com/image/M5KeuOtU2NpC.png",
+"https://xatimg.com/image/4jN5TkdSc7x2.png",
+"https://xatimg.com/image/lVL1GmAicIdb.png",
+"https://xatimg.com/image/mXfIoSoinvlS.png",
+"https://xatimg.com/image/8xBvreP1tnhM.png",
+"https://xatimg.com/image/nab0xky1W2xS.png",
+"https://xatimg.com/image/FsBTPmQof5lm.png",
+"https://xatimg.com/image/WXLjqP8s9vGC.png",
+"https://xatimg.com/image/LhYixIgopzov.png",
+"https://xatimg.com/image/QWolp0nO1Cyr.png",
+"https://xatimg.com/image/exTtbU6yIvUj.png",
+"https://xatimg.com/image/cMRWTKaqMi4D.png",
+"https://xatimg.com/image/gBrmjCkiusJR.png",
+"https://xatimg.com/image/HkiuA7zSpIe1.jpg",
+"https://xatimg.com/image/g3yvu0wIxPXE.jpg",
+"https://xatimg.com/image/U6OJG0dKfA7E.png"
+];
+
+// GERAR CARDS
+const container = document.getElementById("netflixList");
+
+imagens.forEach(src => {
+  container.innerHTML += `
+    <div class="card">
+      <img src="${src}" onclick="openModal('${src}')">
+      <button class="fav-btn" onclick="toggleFav(this, '${src}')">❤</button>
+    </div>
+  `;
+});
 
 // SOM
-function playSound() {
-  const audio = new Audio("https://freesound.org/data/previews/341/341695_6245054-lq.mp3");
-  audio.volume = 0.3;
-  audio.play();
+function playClick(){
+  new Audio("https://freesound.org/data/previews/522/522867_11507880-lq.mp3").play();
 }
 
-// MENU DE PAINÉIS INTERNOS
-function showPanel(panelId) {
-  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById(panelId).classList.add('active');
-  document.getElementById('spotify-inner').style.display = 'none';
-}
-
-// VOLTAR AO INÍCIO
-function showMainCard() {
-  document.getElementById("panelGFS").classList.remove("active");
-  document.getElementById("panelStatic").classList.remove("active");
-  document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('main-card').style.display = 'flex';
-  document.getElementById('spotify-inner').style.display = 'flex';
-}
-
-// FUNÇÕES DE FUNDO / PAINÉIS
-function openGFS() {
-  document.getElementById("panelGFS").classList.add("active");
-  document.getElementById("panelStatic").classList.remove("active");
-  document.getElementById("main-card").style.display = "none";
-  const card = document.getElementById("cardGFS1");
-  card.innerHTML = '<img src="https://xatimg.com/image/2z709uX4q7li.gif">';
-  card.onclick = function() { openModal("https://xatimg.com/image/2z709uX4q7li.gif"); };
-}
-
-function openStatic() {
-  document.getElementById("panelStatic").classList.add("active");
-  document.getElementById("panelGFS").classList.remove("active");
-  document.getElementById("main-card").style.display = "none";
-  resetParticlesStatic();
+// SCROLL
+function scrollRow(dir){
+  document.getElementById("netflixList").scrollBy({
+    left: dir * 300,
+    behavior: 'smooth'
+  });
+  playClick();
 }
 
 // MODAL
-function openModal(src) { 
-  document.getElementById("modal").style.display = "flex"; 
-  document.getElementById("modalImg").src = src; 
+function openModal(src){
+  document.getElementById("modal").style.display="flex";
+  document.getElementById("modalImg").src=src;
+  document.getElementById("downloadLink").href=src;
+  playClick();
 }
-function closeModal() { document.getElementById("modal").style.display = "none"; }
 
-// CANVAS PARTICULAS
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
+function closeModal(){
+  document.getElementById("modal").style.display="none";
+}
 
-let particles = [];
-class Particle { 
-  constructor(){ 
-    this.x=Math.random()*canvas.width; 
-    this.y=Math.random()*canvas.height; 
-    this.size=Math.random()*2+1; 
-    this.speedX=Math.random()-0.5; 
-    this.speedY=Math.random()-0.5;
-  } 
-  update(){
-    this.x+=this.speedX; 
-    this.y+=this.speedY; 
-    if(this.x>canvas.width)this.x=0;
-    if(this.x<0)this.x=canvas.width;
-    if(this.y>canvas.height)this.y=0;
-    if(this.y<0)this.y=canvas.height;
-  } 
-  draw(){
-    ctx.fillStyle="#00ffff";
-    ctx.beginPath();
-    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    ctx.fill();
+// FAVORITOS
+function toggleFav(btn, img){
+  let favs = JSON.parse(localStorage.getItem("favs")) || [];
+
+  if(favs.includes(img)){
+    favs = favs.filter(f => f !== img);
+    btn.classList.remove("active");
+  } else {
+    favs.push(img);
+    btn.classList.add("active");
   }
+
+  localStorage.setItem("favs", JSON.stringify(favs));
+  playClick();
 }
-function initParticles(count=100){particles=[];for(let i=0;i<count;i++)particles.push(new Particle());}
-function resetParticlesStatic(count=100){particles=[];for(let i=0;i<count;i++){let p=new Particle();p.speedX=0;p.speedY=0;particles.push(p);}}
-function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateParticles);}
-initParticles();
-animateParticles();
+
+// CARREGAR FAVORITOS
+window.onload = () => {
+  let favs = JSON.parse(localStorage.getItem("favs")) || [];
+
+  document.querySelectorAll(".fav-btn").forEach(btn => {
+    const img = btn.getAttribute("onclick").split("'")[1];
+    if(favs.includes(img)){
+      btn.classList.add("active");
+    }
+  });
+};
 </script>
 
 </body>
