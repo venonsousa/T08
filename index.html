@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Galeria Netflix Style</title>
+<title>Galeria Netflix Style PRO</title>
 
 <style>
 body {
@@ -13,32 +13,53 @@ body {
   display: flex;
 }
 
-/* MENU LATERAL */
+/* MENU */
 .menu {
-  width: 220px;
+  width: 240px;
   background: #141414;
   height: 100vh;
   padding: 20px;
   box-sizing: border-box;
 }
 
-.menu h2 {
+/* PERFIL */
+.profile {
+  text-align: center;
   margin-bottom: 30px;
 }
 
+.profile img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 2px solid #e50914;
+}
+
+.profile h3 {
+  margin: 5px 0;
+}
+
+.profile p {
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* BOTÕES */
 .menu button {
   width: 100%;
   padding: 12px;
-  background: #e50914;
+  margin-bottom: 10px;
+  background: #222;
   border: none;
   color: white;
   cursor: pointer;
-  font-size: 15px;
   border-radius: 5px;
+  transition: 0.3s;
 }
 
 .menu button:hover {
-  background: #ff1e26;
+  background: #e50914;
 }
 
 /* CONTEÚDO */
@@ -71,7 +92,6 @@ body {
   transition: 0.4s;
 }
 
-/* ZOOM HOVER */
 .card:hover img {
   transform: scale(1.1);
 }
@@ -84,10 +104,9 @@ body {
   background: rgba(0,0,0,0.7);
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: 14px;
 }
 
-/* MODAL BASE */
+/* MODAL */
 .modal {
   position: fixed;
   top: 0;
@@ -103,18 +122,15 @@ body {
   transition: 0.4s;
 }
 
-/* MODAL ATIVO */
 .modal.active {
   opacity: 1;
   pointer-events: all;
   background: rgba(0,0,0,0.95);
 }
 
-/* IMAGEM ANIMADA */
 .modal img {
   width: 1202px;
   height: 733px;
-  object-fit: cover;
   border-radius: 10px;
   transform: scale(0.7);
   opacity: 0;
@@ -126,16 +142,13 @@ body {
   opacity: 1;
 }
 
-/* BOTÃO FECHAR */
 .close {
   position: absolute;
   top: 30px;
   right: 40px;
   font-size: 30px;
   cursor: pointer;
-  color: white;
   opacity: 0;
-  transition: 0.3s;
 }
 
 .modal.active .close {
@@ -147,12 +160,23 @@ body {
 <body>
 
 <div class="menu">
-  <h2>Menu</h2>
-  <button>Galerias de Fundos</button>
+
+  <!-- PERFIL -->
+  <div class="profile">
+    <img src="https://i.imgur.com/2DhmtJ4.png">
+    <h3>iiCarvaozim</h3>
+    <p>/Design/ 2026</p>
+  </div>
+
+  <!-- BOTÕES -->
+  <button onclick="trocarPagina('fundos')">Galerias de Fundos</button>
+  <button onclick="trocarPagina('pcback')">PCBACK</button>
+  <button onclick="trocarPagina('perfils')">Perfils</button>
+
 </div>
 
 <div class="content">
-  <h2>Galeria</h2>
+  <h2 id="titulo">Galeria</h2>
   <div class="grid" id="grid"></div>
 </div>
 
@@ -163,63 +187,71 @@ body {
 </div>
 
 <script>
-const imagens = [
-"https://xatimg.com/image/LhPTjinBD63k.png",
-"https://xatimg.com/image/jEluPHc8kDBS.png",
-"https://xatimg.com/image/M5KeuOtU2NpC.png",
-"https://xatimg.com/image/4jN5TkdSc7x2.png",
-"https://xatimg.com/image/lVL1GmAicIdb.png",
-"https://xatimg.com/image/mXfIoSoinvlS.png",
-"https://xatimg.com/image/8xBvreP1tnhM.png",
-"https://xatimg.com/image/nab0xky1W2xS.png",
-"https://xatimg.com/image/FsBTPmQof5lm.png",
-"https://xatimg.com/image/LhPTjinBD63k.png",
-"https://xatimg.com/image/WXLjqP8s9vGC.png",
-"https://xatimg.com/image/LhYixIgopzov.png",
-"https://xatimg.com/image/QWolp0nO1Cyr.png",
-"https://xatimg.com/image/exTtbU6yIvUj.png",
-"https://xatimg.com/image/cMRWTKaqMi4D.png",
-"https://xatimg.com/image/gBrmjCkiusJR.png",
-"https://xatimg.com/image/HkiuA7zSpIe1.jpg",
-"https://xatimg.com/image/g3yvu0wIxPXE.jpg",
-"https://xatimg.com/image/U6OJG0dKfA7E.png"
-];
 
-const grid = document.getElementById("grid");
+/* IMAGENS DE CADA PÁGINA */
+const paginas = {
 
-imagens.forEach((img, i) => {
-  const card = document.createElement("div");
-  card.className = "card";
+  fundos: [
+    "https://xatimg.com/image/LhPTjinBD63k.png",
+    "https://xatimg.com/image/jEluPHc8kDBS.png",
+    "https://xatimg.com/image/M5KeuOtU2NpC.png",
+    "https://xatimg.com/image/4jN5TkdSc7x2.png",
+    "https://xatimg.com/image/lVL1GmAicIdb.png"
+  ],
 
-  card.innerHTML = `
-    <span>${i + 1}</span>
-    <img src="${img}" onclick="abrir('${img}')">
-  `;
+  pcback: [
+    "https://xatimg.com/image/mXfIoSoinvlS.png",
+    "https://xatimg.com/image/8xBvreP1tnhM.png",
+    "https://xatimg.com/image/nab0xky1W2xS.png"
+  ],
 
-  grid.appendChild(card);
-});
+  perfils: [
+    "https://xatimg.com/image/FsBTPmQof5lm.png",
+    "https://xatimg.com/image/WXLjqP8s9vGC.png",
+    "https://xatimg.com/image/LhYixIgopzov.png"
+  ]
+};
 
-/* ABRIR COM ANIMAÇÃO */
+/* TROCAR PÁGINA */
+function trocarPagina(nome){
+  const grid = document.getElementById("grid");
+  const titulo = document.getElementById("titulo");
+
+  grid.innerHTML = "";
+  titulo.innerText = nome.toUpperCase();
+
+  paginas[nome].forEach((img, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <span>${i + 1}</span>
+      <img src="${img}" onclick="abrir('${img}')">
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+/* MODAL */
 function abrir(src){
-  const modal = document.getElementById("modal");
-  const img = document.getElementById("imgModal");
-
-  img.src = src;
-  modal.classList.add("active");
+  document.getElementById("imgModal").src = src;
+  document.getElementById("modal").classList.add("active");
 }
 
-/* FECHAR */
 function fechar(){
-  const modal = document.getElementById("modal");
-  modal.classList.remove("active");
+  document.getElementById("modal").classList.remove("active");
 }
 
-/* FECHAR CLICANDO FORA */
 document.getElementById("modal").addEventListener("click", function(e){
   if(e.target.id === "modal"){
     fechar();
   }
 });
+
+/* INICIAR */
+trocarPagina('fundos');
+
 </script>
 
 </body>
