@@ -11,39 +11,46 @@ body {
   font-family: Arial;
   background: url('https://xatimg.com/image/2z709uX4q7li.gif') center/cover fixed;
   color: white;
+  margin-left: 60px;
 }
 
-/* MENU */
-.top-menu {
-  text-align: center;
-  padding: 10px;
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  gap: 15px;
+  z-index: 100;
 }
-.top-menu button {
-  margin: 5px;
-  padding: 10px;
+.sidebar button {
+  background: none;
   border: none;
-  border-radius: 10px;
+  color: white;
+  font-size: 22px;
   cursor: pointer;
-  background: #00ffff;
-  color: black;
-  font-weight: bold;
 }
 
 /* JANELAS */
 .window { display: none; padding: 20px; }
 .window.active { display: block; }
 
-/* WRAPPER */
+/* GALERIA */
 .netflix-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* GALERIA */
 .netflix-container {
-  width: 932px;
-  height: 235px;
+  width: 1000px;
+  height: 300px;
   display: flex;
   overflow-x: auto;
   gap: 15px;
@@ -56,8 +63,8 @@ body {
 
 /* CARD */
 .card {
-  min-width: 180px;
-  height: 120px;
+  min-width: 228px;
+  height: 227px;
   border-radius: 12px;
   overflow: hidden;
   position: relative;
@@ -73,16 +80,34 @@ body {
   object-fit: cover;
 }
 
-/* VIDEO */
 .card video { display: none; }
-
 .card.playing video { display: block; }
 .card.playing img { display: none; }
 
-/* EXPANSÃO */
 .card.expand {
   transform: scale(1.4);
   z-index: 20;
+}
+
+/* INFO */
+.card-info {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  opacity: 0;
+  transition: 0.3s;
+}
+.card.expand .card-info { opacity: 1; }
+
+.card-title {
+  font-size: 14px;
+  font-weight: bold;
+}
+.card-desc {
+  font-size: 12px;
+  color: #ccc;
 }
 
 /* FAVORITO */
@@ -157,11 +182,11 @@ body {
 
 <body>
 
-<!-- MENU -->
-<div class="top-menu">
-  <button onclick="openWindow('gallery')">GALERIA</button>
-  <button onclick="openWindow('pcback')">PCBACK</button>
-  <button onclick="openWindow('perfils')">PERFILS</button>
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <button onclick="openWindow('gallery')">🏠</button>
+  <button onclick="openWindow('pcback')">💻</button>
+  <button onclick="openWindow('perfils')">👤</button>
 </div>
 
 <!-- GALERIA -->
@@ -175,51 +200,49 @@ body {
   <button class="arrow" onclick="scrollGallery(1)">❯</button>
 </div>
 
-<!-- DESTAQUE -->
 <div class="highlight">
   <img id="highlightImg" src="https://xatimg.com/image/jZxk3vbSyvkO.png">
 </div>
 
 </div>
 
-<!-- PCBACK -->
-<div id="pcback" class="window">
-  <h2>PCBACK</h2>
-</div>
-
-<!-- PERFILS -->
-<div id="perfils" class="window">
-  <h2>Perfils</h2>
-</div>
+<div id="pcback" class="window"><h2>PCBACK</h2></div>
+<div id="perfils" class="window"><h2>Perfils</h2></div>
 
 <!-- MODAL -->
-<div id="modal">
-  <span class="close-btn" onclick="closeModal()">✕</span>
+<div id="modal" onclick="closeModal(event)">
+  <span class="close-btn">✕</span>
   <img id="modalImg">
 </div>
 
 <script>
-// DADOS
 const imagens = [
 {
   img: "https://xatimg.com/image/LhPTjinBD63k.png",
-  video: "https://www.w3schools.com/html/mov_bbb.mp4"
+  video: "https://www.w3schools.com/html/mov_bbb.mp4",
+  titulo: "Filme 1",
+  desc: "Conteúdo estilo Netflix com preview automático."
 },
 {
   img: "https://xatimg.com/image/jEluPHc8kDBS.png",
-  video: "https://www.w3schools.com/html/movie.mp4"
+  video: "https://www.w3schools.com/html/movie.mp4",
+  titulo: "Filme 2",
+  desc: "Descrição curta e chamativa."
 },
 {
   img: "https://xatimg.com/image/M5KeuOtU2NpC.png",
-  video: "https://www.w3schools.com/html/mov_bbb.mp4"
+  video: "https://www.w3schools.com/html/mov_bbb.mp4",
+  titulo: "Filme 3",
+  desc: "Outro exemplo com animação."
 },
 {
   img: "https://xatimg.com/image/4jN5TkdSc7x2.png",
-  video: "https://www.w3schools.com/html/movie.mp4"
+  video: "https://www.w3schools.com/html/movie.mp4",
+  titulo: "Filme 4",
+  desc: "Preview com hover automático."
 }
 ];
 
-// RENDER
 function renderImages(list){
   const container = document.getElementById("netflixList");
   container.innerHTML = "";
@@ -239,14 +262,15 @@ function renderImages(list){
     video.src = item.video;
     video.muted = true;
     video.loop = true;
+    video.playsInline = true;
 
-    img.onclick = () => openModal(item.img);
+    card.onclick = () => openModal(item.img);
 
     card.addEventListener("mouseenter", () => {
       timer = setTimeout(() => {
         card.classList.add("expand", "playing");
         video.currentTime = 0;
-        video.play();
+        video.play().catch(()=>{});
       }, 400);
     });
 
@@ -267,36 +291,53 @@ function renderImages(list){
       toggleFav(btn, item.img);
     };
 
+    const info = document.createElement("div");
+    info.className = "card-info";
+
+    const title = document.createElement("div");
+    title.className = "card-title";
+    title.innerText = item.titulo;
+
+    const desc = document.createElement("div");
+    desc.className = "card-desc";
+    desc.innerText = item.desc;
+
+    info.appendChild(title);
+    info.appendChild(desc);
+
     card.appendChild(img);
     card.appendChild(video);
     card.appendChild(btn);
+    card.appendChild(info);
     container.appendChild(card);
   });
 }
 renderImages(imagens);
 
-// BUSCA
 document.getElementById("searchInput").addEventListener("input", e=>{
   const val = e.target.value.toLowerCase();
-  renderImages(imagens.filter(i => i.img.toLowerCase().includes(val)));
+  renderImages(imagens.filter(i =>
+    i.titulo.toLowerCase().includes(val) ||
+    i.desc.toLowerCase().includes(val)
+  ));
 });
 
-// SCROLL
 function scrollGallery(dir){
   document.getElementById("netflixList").scrollLeft += dir * 300;
 }
 
-// MODAL + DESTAQUE
 function openModal(src){
   document.getElementById("modal").style.display="flex";
   document.getElementById("modalImg").src=src;
   document.getElementById("highlightImg").src = src;
 }
-function closeModal(){
-  document.getElementById("modal").style.display="none";
+
+function closeModal(e){
+  if(e.target.id === "modal" || e.target.classList.contains("close-btn")){
+    document.getElementById("modal").style.display="none";
+  }
 }
 
-// FAVORITOS
 function toggleFav(btn,img){
   let favs = JSON.parse(localStorage.getItem("favs")) || [];
 
@@ -311,7 +352,6 @@ function toggleFav(btn,img){
   localStorage.setItem("favs", JSON.stringify(favs));
 }
 
-// JANELAS
 function openWindow(id){
   document.querySelectorAll(".window").forEach(w=>w.classList.remove("active"));
   document.getElementById(id).classList.add("active");
