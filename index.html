@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interface INSANA</title>
+<title>Galeria INSANA PRO</title>
 
 <style>
 body {
@@ -11,68 +11,85 @@ body {
   font-family: Arial;
   background: url('https://xatimg.com/image/2z709uX4q7li.gif') center/cover fixed;
   color: white;
+  overflow-y: auto;
 }
 
-/* SIDEBAR */
-.sidebar {
-  position: fixed;
-  width: 250px;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
+/* SCROLL GLOBAL */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00ffff, #0077ff);
+  border-radius: 10px;
+  box-shadow: 0 0 10px #00ffff;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #00ffff rgba(0,0,0,0.5);
+}
+
+/* LAYOUT */
+#main-card {
   padding: 20px;
+  text-align: center;
 }
 
-/* BOTÃO */
-.menu-btn {
-  width: 100%;
-  margin-top: 10px;
+/* BUSCA + BOTÕES */
+input {
   padding: 10px;
+  width: 250px;
+  border-radius: 10px;
   border: none;
+}
+
+button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  background: linear-gradient(45deg, #00ffff, #0077ff);
+  color: black;
   font-weight: bold;
 }
 
-/* MAIN */
-#main-card {
-  margin-left: 260px;
-  padding: 20px;
+button:hover {
+  transform: scale(1.05);
 }
 
-/* NETFLIX */
-.netflix-row { position: relative; }
-
+/* CONTAINER FIXO */
 .netflix-container {
+  width: 932px;
+  height: 235px;
   display: flex;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  overflow-x: hidden;
   gap: 15px;
   padding: 10px;
-}
-
-.netflix-container::-webkit-scrollbar { display: none; }
-
-/* SETAS */
-.arrow {
-  position: absolute;
-  top: 40%;
-  font-size: 30px;
+  border-radius: 15px;
   background: rgba(0,0,0,0.6);
-  border: none;
-  color: cyan;
-  cursor: pointer;
-  z-index: 10;
+  margin: auto;
 }
 
-.arrow.left { left: 0; }
-.arrow.right { right: 0; }
+/* SCROLL INTERNO */
+.netflix-container::-webkit-scrollbar {
+  width: 8px;
+}
+.netflix-container::-webkit-scrollbar-thumb {
+  background: #00ffff;
+  border-radius: 10px;
+}
 
 /* CARD */
 .card {
-  min-width: 220px;
-  height: 150px;
-  border-radius: 10px;
+  width: 180px;
+  height: 120px;
+  border-radius: 12px;
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  border: 2px solid rgba(0,255,255,0.5);
+  transition: 0.3s;
 }
 
 .card img {
@@ -82,7 +99,14 @@ body {
   transition: 0.4s;
 }
 
-.card:hover img { transform: scale(1.1); }
+.card:hover {
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 15px #00ffff;
+}
+
+.card:hover img {
+  transform: scale(1.1);
+}
 
 /* FAVORITO */
 .fav-btn {
@@ -94,7 +118,6 @@ body {
   background: rgba(0,0,0,0.6);
   color: white;
   cursor: pointer;
-  font-size: 16px;
 }
 
 .fav-btn.active { color: red; }
@@ -112,7 +135,6 @@ body {
   flex-direction: column;
 }
 
-/* IMAGEM GRANDE */
 #modalImg {
   width: 1107px;
   height: 678px;
@@ -121,7 +143,6 @@ body {
   box-shadow: 0 0 30px cyan;
 }
 
-/* FECHAR */
 .close-btn {
   position: absolute;
   top: 20px;
@@ -131,7 +152,6 @@ body {
   cursor: pointer;
 }
 
-/* DOWNLOAD */
 .download-btn {
   margin-top: 10px;
   padding: 10px;
@@ -146,27 +166,34 @@ body {
     width: 90%;
     height: auto;
   }
+  .netflix-container {
+    width: 95%;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="sidebar">
-  <button class="menu-btn">INÍCIO</button>
-</div>
-
 <div id="main-card">
 
-<h2>Fundos Estáticos</h2>
+<h2>Galeria de Fundos</h2>
 
-<div class="netflix-row">
-<button class="arrow left" onclick="scrollRow(-1)">❮</button>
-<button class="arrow right" onclick="scrollRow(1)">❯</button>
+<!-- BUSCA -->
+<input type="text" id="searchInput" placeholder="🔍 Buscar imagem...">
 
+<!-- CATEGORIAS -->
+<div>
+  <button onclick="filterCategory('all')">TODOS</button>
+  <button onclick="filterCategory('gif')">GIF</button>
+  <button onclick="filterCategory('hd')">HD</button>
+  <button onclick="filterCategory('dark')">DARK</button>
+  <button onclick="filterCategory('neon')">NEON</button>
+</div>
+
+<!-- GALERIA -->
 <div class="netflix-container" id="netflixList"></div>
 
-</div>
 </div>
 
 <!-- MODAL -->
@@ -179,52 +206,70 @@ body {
 </div>
 
 <script>
-// LISTA DE IMAGENS
+// IMAGENS COM CATEGORIA
 const imagens = [
-"https://xatimg.com/image/LhPTjinBD63k.png",
-"https://xatimg.com/image/jEluPHc8kDBS.png",
-"https://xatimg.com/image/M5KeuOtU2NpC.png",
-"https://xatimg.com/image/4jN5TkdSc7x2.png",
-"https://xatimg.com/image/lVL1GmAicIdb.png",
-"https://xatimg.com/image/mXfIoSoinvlS.png",
-"https://xatimg.com/image/8xBvreP1tnhM.png",
-"https://xatimg.com/image/nab0xky1W2xS.png",
-"https://xatimg.com/image/FsBTPmQof5lm.png",
-"https://xatimg.com/image/WXLjqP8s9vGC.png",
-"https://xatimg.com/image/LhYixIgopzov.png",
-"https://xatimg.com/image/QWolp0nO1Cyr.png",
-"https://xatimg.com/image/exTtbU6yIvUj.png",
-"https://xatimg.com/image/cMRWTKaqMi4D.png",
-"https://xatimg.com/image/gBrmjCkiusJR.png",
-"https://xatimg.com/image/HkiuA7zSpIe1.jpg",
-"https://xatimg.com/image/g3yvu0wIxPXE.jpg",
-"https://xatimg.com/image/U6OJG0dKfA7E.png"
+{src:"https://xatimg.com/image/LhPTjinBD63k.png", cat:"neon"},
+{src:"https://xatimg.com/image/jEluPHc8kDBS.png", cat:"dark"},
+{src:"https://xatimg.com/image/M5KeuOtU2NpC.png", cat:"hd"},
+{src:"https://xatimg.com/image/4jN5TkdSc7x2.png", cat:"gif"},
+{src:"https://xatimg.com/image/lVL1GmAicIdb.png", cat:"neon"},
+{src:"https://xatimg.com/image/mXfIoSoinvlS.png", cat:"dark"},
+{src:"https://xatimg.com/image/8xBvreP1tnhM.png", cat:"hd"},
+{src:"https://xatimg.com/image/nab0xky1W2xS.png", cat:"gif"},
+{src:"https://xatimg.com/image/FsBTPmQof5lm.png", cat:"neon"},
+{src:"https://xatimg.com/image/WXLjqP8s9vGC.png", cat:"dark"},
+{src:"https://xatimg.com/image/LhYixIgopzov.png", cat:"hd"},
+{src:"https://xatimg.com/image/QWolp0nO1Cyr.png", cat:"gif"},
+{src:"https://xatimg.com/image/exTtbU6yIvUj.png", cat:"neon"},
+{src:"https://xatimg.com/image/cMRWTKaqMi4D.png", cat:"dark"},
+{src:"https://xatimg.com/image/gBrmjCkiusJR.png", cat:"hd"},
+{src:"https://xatimg.com/image/HkiuA7zSpIe1.jpg", cat:"dark"},
+{src:"https://xatimg.com/image/g3yvu0wIxPXE.jpg", cat:"hd"},
+{src:"https://xatimg.com/image/U6OJG0dKfA7E.png", cat:"neon"}
 ];
 
-// GERAR CARDS
-const container = document.getElementById("netflixList");
+// RENDER
+function renderImages(list){
+  const container = document.getElementById("netflixList");
+  container.innerHTML = "";
 
-imagens.forEach(src => {
-  container.innerHTML += `
-    <div class="card">
-      <img src="${src}" onclick="openModal('${src}')">
-      <button class="fav-btn" onclick="toggleFav(this, '${src}')">❤</button>
-    </div>
-  `;
+  list.forEach(item => {
+    container.innerHTML += `
+      <div class="card">
+        <img src="${item.src}" onclick="openModal('${item.src}')">
+        <button class="fav-btn" onclick="toggleFav(this, '${item.src}')">❤</button>
+      </div>
+    `;
+  });
+}
+
+renderImages(imagens);
+
+// BUSCA
+document.getElementById("searchInput").addEventListener("input", function(){
+  const value = this.value.toLowerCase();
+
+  const filtradas = imagens.filter(img =>
+    img.src.toLowerCase().includes(value)
+  );
+
+  renderImages(filtradas);
 });
+
+// CATEGORIA
+function filterCategory(cat){
+  if(cat === "all"){
+    renderImages(imagens);
+    return;
+  }
+
+  const filtradas = imagens.filter(img => img.cat === cat);
+  renderImages(filtradas);
+}
 
 // SOM
 function playClick(){
   new Audio("https://freesound.org/data/previews/522/522867_11507880-lq.mp3").play();
-}
-
-// SCROLL
-function scrollRow(dir){
-  document.getElementById("netflixList").scrollBy({
-    left: dir * 300,
-    behavior: 'smooth'
-  });
-  playClick();
 }
 
 // MODAL
