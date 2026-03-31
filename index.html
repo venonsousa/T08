@@ -104,6 +104,19 @@ body {
   background: rgba(0,0,0,0.7);
   padding: 4px 8px;
   border-radius: 4px;
+  z-index: 2;
+}
+
+/* PLACEHOLDER PCBACK */
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background: #1c1c1c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 22px;
 }
 
 /* MODAL */
@@ -188,7 +201,7 @@ body {
 
 <script>
 
-/* IMAGENS DE CADA PÁGINA */
+/* PÁGINAS */
 const paginas = {
 
   fundos: [
@@ -199,11 +212,7 @@ const paginas = {
     "https://xatimg.com/image/lVL1GmAicIdb.png"
   ],
 
-  pcback: [
-    "https://xatimg.com/image/mXfIoSoinvlS.png",
-    "https://xatimg.com/image/8xBvreP1tnhM.png",
-    "https://xatimg.com/image/nab0xky1W2xS.png"
-  ],
+  pcback: new Array(12).fill(null),
 
   perfils: [
     "https://xatimg.com/image/FsBTPmQof5lm.png",
@@ -224,10 +233,17 @@ function trocarPagina(nome){
     const card = document.createElement("div");
     card.className = "card";
 
-    card.innerHTML = `
-      <span>${i + 1}</span>
-      <img src="${img}" onclick="abrir('${img}')">
-    `;
+    if(img){
+      card.innerHTML = `
+        <span>${i + 1}</span>
+        <img src="${img}" onclick="abrir('${img}')">
+      `;
+    } else {
+      card.innerHTML = `
+        <span>${i + 1}</span>
+        <div class="placeholder">PCBACK</div>
+      `;
+    }
 
     grid.appendChild(card);
   });
