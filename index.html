@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Galeria INSANA PRO</title>
+<title>Galeria GOD MODE</title>
 
 <style>
 body {
@@ -11,73 +11,52 @@ body {
   font-family: Arial;
   background: url('https://xatimg.com/image/2z709uX4q7li.gif') center/cover fixed;
   color: white;
-  overflow-y: auto;
 }
 
-/* SCROLL GLOBAL */
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00ffff, #0077ff);
-  border-radius: 10px;
-  box-shadow: 0 0 10px #00ffff;
-}
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #00ffff rgba(0,0,0,0.5);
-}
-
-/* LAYOUT */
-#main-card {
-  padding: 20px;
+/* BOTÕES TOPO */
+.top-menu {
   text-align: center;
-}
-
-/* BUSCA + BOTÕES */
-input {
   padding: 10px;
-  width: 250px;
-  border-radius: 10px;
-  border: none;
 }
 
-button {
+.top-menu button {
   margin: 5px;
-  padding: 8px 12px;
+  padding: 10px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  background: linear-gradient(45deg, #00ffff, #0077ff);
-  color: black;
+  background: linear-gradient(45deg,#00ffff,#0077ff);
   font-weight: bold;
 }
 
-button:hover {
-  transform: scale(1.05);
+/* JANELAS */
+.window {
+  display: none;
+  padding: 20px;
 }
 
-/* CONTAINER FIXO */
+.window.active {
+  display: block;
+  animation: fade 0.4s;
+}
+
+@keyframes fade {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1;}
+}
+
+/* GALERIA */
 .netflix-container {
   width: 932px;
   height: 235px;
   display: flex;
   flex-wrap: wrap;
   overflow-y: auto;
-  overflow-x: hidden;
   gap: 15px;
   padding: 10px;
-  border-radius: 15px;
-  background: rgba(0,0,0,0.6);
   margin: auto;
-}
-
-/* SCROLL INTERNO */
-.netflix-container::-webkit-scrollbar {
-  width: 8px;
-}
-.netflix-container::-webkit-scrollbar-thumb {
-  background: #00ffff;
-  border-radius: 10px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 15px;
 }
 
 /* CARD */
@@ -87,9 +66,8 @@ button:hover {
   border-radius: 12px;
   overflow: hidden;
   position: relative;
-  cursor: pointer;
   border: 2px solid rgba(0,255,255,0.5);
-  transition: 0.3s;
+  cursor: pointer;
 }
 
 .card img {
@@ -99,13 +77,10 @@ button:hover {
   transition: 0.4s;
 }
 
-.card:hover {
-  border: 2px solid #00ffff;
-  box-shadow: 0 0 15px #00ffff;
-}
-
+/* PREVIEW ANIMADO */
 .card:hover img {
-  transform: scale(1.1);
+  transform: scale(1.2) rotate(1deg);
+  filter: brightness(1.2);
 }
 
 /* FAVORITO */
@@ -113,20 +88,17 @@ button:hover {
   position: absolute;
   top: 5px;
   right: 5px;
-  border: none;
-  border-radius: 50%;
   background: rgba(0,0,0,0.6);
+  border: none;
   color: white;
   cursor: pointer;
 }
-
 .fav-btn.active { color: red; }
 
 /* MODAL */
 #modal {
   display: none;
   position: fixed;
-  z-index: 9999;
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.9);
@@ -139,8 +111,6 @@ button:hover {
   width: 1107px;
   height: 678px;
   object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 0 30px cyan;
 }
 
 .close-btn {
@@ -148,84 +118,84 @@ button:hover {
   top: 20px;
   right: 30px;
   font-size: 30px;
-  color: cyan;
   cursor: pointer;
 }
 
-.download-btn {
-  margin-top: 10px;
-  padding: 10px;
-  cursor: pointer;
-  background: cyan;
-  border: none;
+/* PERFILS */
+.profile-card {
+  width: 150px;
+  text-align: center;
 }
 
-/* RESPONSIVO */
-@media (max-width: 1200px) {
-  #modalImg {
-    width: 90%;
-    height: auto;
-  }
-  .netflix-container {
-    width: 95%;
-  }
+.profile-card img {
+  width: 100px;
+  border-radius: 50%;
 }
 </style>
 </head>
 
 <body>
 
-<div id="main-card">
-
-<h2>Galeria de Fundos</h2>
-
-<!-- BUSCA -->
-<input type="text" id="searchInput" placeholder="🔍 Buscar imagem...">
-
-<!-- CATEGORIAS -->
-<div>
-  <button onclick="filterCategory('all')">TODOS</button>
-  <button onclick="filterCategory('gif')">GIF</button>
-  <button onclick="filterCategory('hd')">HD</button>
-  <button onclick="filterCategory('dark')">DARK</button>
-  <button onclick="filterCategory('neon')">NEON</button>
+<!-- MENU -->
+<div class="top-menu">
+  <button onclick="openWindow('gallery')">GALERIA</button>
+  <button onclick="openWindow('pcback')">PCBACK</button>
+  <button onclick="openWindow('perfils')">PERFILS</button>
 </div>
 
 <!-- GALERIA -->
+<div id="gallery" class="window active">
+
+<input type="text" id="searchInput" placeholder="🔍 Buscar...">
+
+<div>
+<button onclick="filterCategory('all')">TODOS</button>
+<button onclick="filterCategory('gif')">GIF</button>
+<button onclick="filterCategory('hd')">HD</button>
+<button onclick="filterCategory('dark')">DARK</button>
+<button onclick="filterCategory('neon')">NEON</button>
+</div>
+
 <div class="netflix-container" id="netflixList"></div>
 
+</div>
+
+<!-- PCBACK -->
+<div id="pcback" class="window">
+  <h2>PCBACK</h2>
+  <p>Aqui você pode colocar configs, downloads ou wallpapers exclusivos 🔥</p>
+</div>
+
+<!-- PERFILS -->
+<div id="perfils" class="window">
+  <h2>Perfils</h2>
+
+  <div style="display:flex; gap:20px; justify-content:center;">
+    <div class="profile-card">
+      <img src="https://i.pravatar.cc/150?img=1">
+      <p>User 1</p>
+    </div>
+
+    <div class="profile-card">
+      <img src="https://i.pravatar.cc/150?img=2">
+      <p>User 2</p>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL -->
 <div id="modal">
   <span class="close-btn" onclick="closeModal()">✕</span>
   <img id="modalImg">
-  <a id="downloadLink" download target="_blank">
-    <button class="download-btn">BAIXAR</button>
-  </a>
 </div>
 
 <script>
-// IMAGENS COM CATEGORIA
+// IMAGENS
 const imagens = [
 {src:"https://xatimg.com/image/LhPTjinBD63k.png", cat:"neon"},
 {src:"https://xatimg.com/image/jEluPHc8kDBS.png", cat:"dark"},
 {src:"https://xatimg.com/image/M5KeuOtU2NpC.png", cat:"hd"},
-{src:"https://xatimg.com/image/4jN5TkdSc7x2.png", cat:"gif"},
-{src:"https://xatimg.com/image/lVL1GmAicIdb.png", cat:"neon"},
-{src:"https://xatimg.com/image/mXfIoSoinvlS.png", cat:"dark"},
-{src:"https://xatimg.com/image/8xBvreP1tnhM.png", cat:"hd"},
-{src:"https://xatimg.com/image/nab0xky1W2xS.png", cat:"gif"},
-{src:"https://xatimg.com/image/FsBTPmQof5lm.png", cat:"neon"},
-{src:"https://xatimg.com/image/WXLjqP8s9vGC.png", cat:"dark"},
-{src:"https://xatimg.com/image/LhYixIgopzov.png", cat:"hd"},
-{src:"https://xatimg.com/image/QWolp0nO1Cyr.png", cat:"gif"},
-{src:"https://xatimg.com/image/exTtbU6yIvUj.png", cat:"neon"},
-{src:"https://xatimg.com/image/cMRWTKaqMi4D.png", cat:"dark"},
-{src:"https://xatimg.com/image/gBrmjCkiusJR.png", cat:"hd"},
-{src:"https://xatimg.com/image/HkiuA7zSpIe1.jpg", cat:"dark"},
-{src:"https://xatimg.com/image/g3yvu0wIxPXE.jpg", cat:"hd"},
-{src:"https://xatimg.com/image/U6OJG0dKfA7E.png", cat:"neon"}
+{src:"https://xatimg.com/image/4jN5TkdSc7x2.png", cat:"gif"}
 ];
 
 // RENDER
@@ -237,80 +207,58 @@ function renderImages(list){
     container.innerHTML += `
       <div class="card">
         <img src="${item.src}" onclick="openModal('${item.src}')">
-        <button class="fav-btn" onclick="toggleFav(this, '${item.src}')">❤</button>
+        <button class="fav-btn" onclick="toggleFav(this,'${item.src}')">❤</button>
       </div>
     `;
   });
 }
-
 renderImages(imagens);
 
 // BUSCA
-document.getElementById("searchInput").addEventListener("input", function(){
-  const value = this.value.toLowerCase();
-
-  const filtradas = imagens.filter(img =>
-    img.src.toLowerCase().includes(value)
-  );
-
-  renderImages(filtradas);
+document.getElementById("searchInput").addEventListener("input", e=>{
+  const val = e.target.value.toLowerCase();
+  renderImages(imagens.filter(i=>i.src.includes(val)));
 });
 
 // CATEGORIA
 function filterCategory(cat){
-  if(cat === "all"){
-    renderImages(imagens);
-    return;
-  }
-
-  const filtradas = imagens.filter(img => img.cat === cat);
-  renderImages(filtradas);
+  if(cat==="all") return renderImages(imagens);
+  renderImages(imagens.filter(i=>i.cat===cat));
 }
 
-// SOM
-function playClick(){
-  new Audio("https://freesound.org/data/previews/522/522867_11507880-lq.mp3").play();
+// JANELAS
+function openWindow(id){
+  document.querySelectorAll(".window").forEach(w=>w.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  playClick();
 }
 
 // MODAL
 function openModal(src){
   document.getElementById("modal").style.display="flex";
   document.getElementById("modalImg").src=src;
-  document.getElementById("downloadLink").href=src;
-  playClick();
 }
-
 function closeModal(){
   document.getElementById("modal").style.display="none";
 }
 
-// FAVORITOS
-function toggleFav(btn, img){
-  let favs = JSON.parse(localStorage.getItem("favs")) || [];
-
+// FAVORITO
+function toggleFav(btn,img){
+  let favs=JSON.parse(localStorage.getItem("favs"))||[];
   if(favs.includes(img)){
-    favs = favs.filter(f => f !== img);
+    favs=favs.filter(f=>f!==img);
     btn.classList.remove("active");
   } else {
     favs.push(img);
     btn.classList.add("active");
   }
-
-  localStorage.setItem("favs", JSON.stringify(favs));
-  playClick();
+  localStorage.setItem("favs",JSON.stringify(favs));
 }
 
-// CARREGAR FAVORITOS
-window.onload = () => {
-  let favs = JSON.parse(localStorage.getItem("favs")) || [];
-
-  document.querySelectorAll(".fav-btn").forEach(btn => {
-    const img = btn.getAttribute("onclick").split("'")[1];
-    if(favs.includes(img)){
-      btn.classList.add("active");
-    }
-  });
-};
+// SOM
+function playClick(){
+  new Audio("https://freesound.org/data/previews/522/522867_11507880-lq.mp3").play();
+}
 </script>
 
 </body>
