@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Galeria INSANA</title>
+<title>Galeria ULTRA Netflix</title>
 
 <style>
 body {
@@ -18,7 +18,6 @@ body {
   text-align: center;
   padding: 10px;
 }
-
 .top-menu button {
   margin: 5px;
   padding: 10px;
@@ -31,13 +30,8 @@ body {
 }
 
 /* JANELAS */
-.window {
-  display: none;
-  padding: 20px;
-}
-.window.active {
-  display: block;
-}
+.window { display: none; padding: 20px; }
+.window.active { display: block; }
 
 /* WRAPPER */
 .netflix-wrapper {
@@ -52,16 +46,13 @@ body {
   height: 235px;
   display: flex;
   overflow-x: auto;
-  overflow-y: hidden;
   gap: 15px;
   padding: 10px;
   scroll-behavior: smooth;
   background: rgba(0,0,0,0.6);
   border-radius: 15px;
 }
-.netflix-container::-webkit-scrollbar {
-  display: none;
-}
+.netflix-container::-webkit-scrollbar { display: none; }
 
 /* CARD */
 .card {
@@ -72,30 +63,26 @@ body {
   position: relative;
   border: 2px solid rgba(0,255,255,0.4);
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.card img {
+.card img,
+.card video {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: 0.4s;
 }
 
-/* HOVER NORMAL */
-.card:hover img {
-  transform: scale(1.15);
-  filter: brightness(1.1);
-}
+/* VIDEO */
+.card video { display: none; }
 
-/* TRAILER AUTO */
-.card.preview img {
-  animation: trailerZoom 3s infinite alternate ease-in-out;
-  transform: scale(1.2);
-}
+.card.playing video { display: block; }
+.card.playing img { display: none; }
 
-@keyframes trailerZoom {
-  0% { transform: scale(1.1); }
-  100% { transform: scale(1.3); }
+/* EXPANSÃO */
+.card.expand {
+  transform: scale(1.4);
+  z-index: 20;
 }
 
 /* FAVORITO */
@@ -108,9 +95,7 @@ body {
   color: white;
   cursor: pointer;
 }
-.fav-btn.active {
-  color: red;
-}
+.fav-btn.active { color: red; }
 
 /* SETAS */
 .arrow {
@@ -129,14 +114,12 @@ body {
   display: flex;
   justify-content: center;
 }
-
 .highlight img {
   width: 604px;
   height: 370px;
   object-fit: cover;
   border-radius: 15px;
   border: 3px solid gold;
-  transition: 0.4s;
 }
 
 /* MODAL */
@@ -148,15 +131,11 @@ body {
   background: rgba(0,0,0,0.9);
   justify-content: center;
   align-items: center;
-  flex-direction: column;
 }
-
 #modalImg {
   max-width: 90%;
   max-height: 90%;
-  object-fit: contain;
 }
-
 .close-btn {
   position: absolute;
   top: 20px;
@@ -192,9 +171,7 @@ body {
 
 <div class="netflix-wrapper">
   <button class="arrow" onclick="scrollGallery(-1)">❮</button>
-
   <div class="netflix-container" id="netflixList"></div>
-
   <button class="arrow" onclick="scrollGallery(1)">❯</button>
 </div>
 
@@ -208,24 +185,11 @@ body {
 <!-- PCBACK -->
 <div id="pcback" class="window">
   <h2>PCBACK</h2>
-  <p>Área para wallpapers 🔥</p>
 </div>
 
 <!-- PERFILS -->
 <div id="perfils" class="window">
   <h2>Perfils</h2>
-
-  <div style="display:flex; gap:20px; justify-content:center;">
-    <div>
-      <img src="https://i.pravatar.cc/100?img=1" style="border-radius:50%">
-      <p>User 1</p>
-    </div>
-
-    <div>
-      <img src="https://i.pravatar.cc/100?img=2" style="border-radius:50%">
-      <p>User 2</p>
-    </div>
-  </div>
 </div>
 
 <!-- MODAL -->
@@ -235,12 +199,24 @@ body {
 </div>
 
 <script>
-// IMAGENS
+// DADOS
 const imagens = [
-"https://xatimg.com/image/LhPTjinBD63k.png",
-"https://xatimg.com/image/jEluPHc8kDBS.png",
-"https://xatimg.com/image/M5KeuOtU2NpC.png",
-"https://xatimg.com/image/4jN5TkdSc7x2.png"
+{
+  img: "https://xatimg.com/image/LhPTjinBD63k.png",
+  video: "https://www.w3schools.com/html/mov_bbb.mp4"
+},
+{
+  img: "https://xatimg.com/image/jEluPHc8kDBS.png",
+  video: "https://www.w3schools.com/html/movie.mp4"
+},
+{
+  img: "https://xatimg.com/image/M5KeuOtU2NpC.png",
+  video: "https://www.w3schools.com/html/mov_bbb.mp4"
+},
+{
+  img: "https://xatimg.com/image/4jN5TkdSc7x2.png",
+  video: "https://www.w3schools.com/html/movie.mp4"
+}
 ];
 
 // RENDER
@@ -250,40 +226,49 @@ function renderImages(list){
 
   let favs = JSON.parse(localStorage.getItem("favs")) || [];
 
-  list.forEach(src => {
+  list.forEach(item => {
     const card = document.createElement("div");
     card.className = "card";
 
     let timer;
 
     const img = document.createElement("img");
-    img.src = src;
-    img.onclick = () => openModal(src);
+    img.src = item.img;
 
-    // TRAILER AUTO
+    const video = document.createElement("video");
+    video.src = item.video;
+    video.muted = true;
+    video.loop = true;
+
+    img.onclick = () => openModal(item.img);
+
     card.addEventListener("mouseenter", () => {
       timer = setTimeout(() => {
-        card.classList.add("preview");
-      }, 500);
+        card.classList.add("expand", "playing");
+        video.currentTime = 0;
+        video.play();
+      }, 400);
     });
 
     card.addEventListener("mouseleave", () => {
       clearTimeout(timer);
-      card.classList.remove("preview");
+      card.classList.remove("expand", "playing");
+      video.pause();
     });
 
     const btn = document.createElement("button");
     btn.className = "fav-btn";
     btn.innerText = "❤";
 
-    if(favs.includes(src)) btn.classList.add("active");
+    if(favs.includes(item.img)) btn.classList.add("active");
 
     btn.onclick = (e) => {
       e.stopPropagation();
-      toggleFav(btn, src);
+      toggleFav(btn, item.img);
     };
 
     card.appendChild(img);
+    card.appendChild(video);
     card.appendChild(btn);
     container.appendChild(card);
   });
@@ -293,19 +278,12 @@ renderImages(imagens);
 // BUSCA
 document.getElementById("searchInput").addEventListener("input", e=>{
   const val = e.target.value.toLowerCase();
-  renderImages(imagens.filter(i => i.toLowerCase().includes(val)));
+  renderImages(imagens.filter(i => i.img.toLowerCase().includes(val)));
 });
 
 // SCROLL
 function scrollGallery(dir){
   document.getElementById("netflixList").scrollLeft += dir * 300;
-}
-
-// JANELAS
-function openWindow(id){
-  document.querySelectorAll(".window").forEach(w=>w.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  playClick();
 }
 
 // MODAL + DESTAQUE
@@ -314,12 +292,11 @@ function openModal(src){
   document.getElementById("modalImg").src=src;
   document.getElementById("highlightImg").src = src;
 }
-
 function closeModal(){
   document.getElementById("modal").style.display="none";
 }
 
-// FAVORITO
+// FAVORITOS
 function toggleFav(btn,img){
   let favs = JSON.parse(localStorage.getItem("favs")) || [];
 
@@ -334,9 +311,10 @@ function toggleFav(btn,img){
   localStorage.setItem("favs", JSON.stringify(favs));
 }
 
-// SOM
-function playClick(){
-  new Audio("https://freesound.org/data/previews/522/522867_11507880-lq.mp3").play();
+// JANELAS
+function openWindow(id){
+  document.querySelectorAll(".window").forEach(w=>w.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 </script>
 
